@@ -331,13 +331,24 @@ For each additional look the asset index calls for (battle suit, performance fit
 - Hand off to banana-pro-director — typically Mode 1B (Soul Cinema two-step) for clean separation of outfit design from character casting.
 - Issue the same pause-and-save grammar with filenames like `references/characters/<working-name>/look_<short-name>.png` (e.g. `look_battle_suit.png`, `look_stadium.png`, `look_loungewear.png`).
 
-### Step 2.5 — Lock the character bible
+### Step 2.5 — Auto-generate the character bible (orchestrator's job, not the producer's)
 
-Once all looks for this character are saved, instruct the user to update `character-bible-<working-name>.md` with:
+Once all looks for this character are saved, **the orchestrator drafts the filled-in `character-bible-<working-name>.md` itself from conversation state.** The producer does not paste pieces together manually. The orchestrator already has every piece in context:
 
-- The locked identity paragraph (visual descriptor only, never the working name)
-- Each look's wardrobe description + filename reference
-- The locked prompts used (paste from the conversation)
+- The locked identity paragraph (from Phase 0 / Step 2.1 development)
+- The 6-panel sheet prompt + chosen panel mix + the reason for any non-default swap (from Step 2.3)
+- The base look prompt + wardrobe description (from Step 2.2)
+- Each additional look's wardrobe + prompt + filename (from Step 2.4 loop, if any)
+- The reference filenames (from the pause-and-save grammar)
+
+The orchestrator assembles all of this into the `templates/character-bible.md` structure and delivers it as a single markdown artifact.
+
+**Delivery depends on environment:**
+
+- **In Claude Code (filesystem access):** write the file directly to the workspace root at `character-bible-<working-name>.md`. Confirm to the producer: *"Driver bible written to `character-bible-driver.md` at workspace root."*
+- **On claude.ai (no filesystem write):** deliver the bible as a single fenced markdown code block for the producer to copy and save manually. Frame the handoff: *"Here's the filled-in character bible — save this as `character-bible-driver.md` at the workspace root."*
+
+The producer never has to choose between "scroll back through chat to find the locked identity table" and "scroll back to find the prompt I delivered four messages ago." The bible is the single artifact that consolidates everything for downstream phases (especially `video-qa`, which reads bibles as ground truth for drift screening).
 
 Then move to the next character. Repeat 2.1–2.5 until every recurring character is locked.
 
@@ -396,9 +407,19 @@ For each prop or creature the producer specifically asked to lock now:
 > 3. Save to: `references/props/<prop-name>/sheet.png`
 > 4. Tell me "[prop] locked."
 
-### Step 3.3 — Lock the bibles
+### Step 3.3 — Auto-generate the environment + prop bibles (orchestrator's job)
 
-For every asset that *did* get locked (upfront or just-in-time during Phase 5), instruct the producer to fill in `environment-bible-<loc>.md` and `prop-bible.md` with the locked descriptions, prompts, and filenames. Assets that haven't been built yet stay as planned entries in the asset index without bibles — bibles get filled when the asset actually exists.
+Same pattern as Step 2.5 — **the orchestrator drafts the filled-in bibles itself from conversation state.** For every asset that did get locked (upfront or just-in-time during Phase 5), the orchestrator assembles the bible content into the matching template structure:
+
+- `environment-bible-<loc>.md` — one per locked location, populated with the locked description, cinema mode, plate filename, and the prompt used
+- `prop-bible.md` — single shared file with an entry per locked prop/creature, each with the locked visual description, sheet filename, and the prompt used
+
+**Delivery depends on environment:**
+
+- **In Claude Code (filesystem access):** write the files directly to the workspace root.
+- **On claude.ai (no filesystem write):** deliver each bible as a fenced markdown code block for the producer to save.
+
+Assets that haven't been built yet stay as planned entries in the asset index without bibles — bibles get filled when the asset actually exists.
 
 **Don't gate Phase 4 on bibles for unbuilt assets.** A location that hasn't shown up in a shot yet doesn't need a bible yet. Pre-mature bibles are bureaucracy.
 

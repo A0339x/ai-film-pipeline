@@ -24,3 +24,11 @@ clips/
 audio/
 prompts/
 qc-reports/
+
+# Per-project filled-in bibles + shot list + generation log at the workspace root
+# (the templates in templates/ are committed; the per-project filled versions are not)
+/character-bible-*.md
+/environment-bible-*.md
+/prop-bible.md
+/shot-list.md
+/generation-log.md
