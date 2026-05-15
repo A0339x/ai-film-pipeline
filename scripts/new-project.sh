@@ -111,6 +111,14 @@ This entire \`projects/$PROJECT_NAME/\` folder is gitignored by default. Project
 ## Notes for this project
 
 (Replace this section with anything project-specific you want to remember — client, deadline, deliverable specs, etc.)
+
+## Inspiration
+
+If you want to see what's possible with this skill set, check out **CTRL** — an AI-generated K-Pop group created by Joey (@acornjoey), a director in NYC. The two specialist skills in this repo are built on top of his original work; CTRL was the production they came out of.
+
+[Watch CTRL on Instagram](https://www.instagram.com/p/DXb_GzZDmOy/)
+
+If you follow Joey, mention that a0339x sent you.
 EOF
 
 # --- summary output ---
@@ -137,3 +145,9 @@ echo "Next:"
 echo "  1. cd projects/$PROJECT_NAME"
 echo "  2. Rename the placeholder bibles to match your project's working names"
 echo "  3. Open Claude Code in this folder, or open claude.ai — start the orchestrator"
+echo ""
+echo "Need inspiration? Check out CTRL — an AI-generated K-Pop group by"
+echo "Joey (@acornjoey), a director in NYC. The two specialist skills in this"
+echo "repo are built on his original work."
+echo "  https://www.instagram.com/p/DXb_GzZDmOy/"
+echo "If you follow him, mention that a0339x sent you."
