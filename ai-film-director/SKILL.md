@@ -500,6 +500,25 @@ The director should refuse to leave Phase 4 until every shot has all the fields 
 
 For each shot in the locked shot list, in delivery order:
 
+### Step 5.0 — Pick the Seedance host (ask once, on the first shot)
+
+Before the first Seedance prompt of the project, surface the platform choice to the producer. Phrase it conversationally — not as a gate, not as a quiz. The two hosts run the *same* underlying model (Seedance 2.0 by ByteDance); the difference is feature surface and price.
+
+> Before we generate the first shot — quick choice on where to run Seedance. There are two tools that both use the same AI model, but one is a lot cheaper than the other:
+>
+> - **ArtCraft** ([getartcraft.com](https://getartcraft.com/)) — **~$10/mo Basic.** Same Seedance 2.0 model. Trade-offs: ~63 seconds of total generation per month on Basic, no auto-edit / multi-cut feature (you generate one shot at a time and stitch in your editor), no edit-and-rerun on a single prompt (every iteration is a full re-paste). Good fit for hobby projects, first-time producers, single-shot work, anyone budget-constrained.
+> - **Higgsfield Plus** (~$34–49/mo) — full-featured. Owns the auto-edit multi-cut feature (one prompt → multiple shots stitched into one generation), edit-and-rerun on prompts, more generation per month. Worth it when you need multi-cut bursts, are iterating heavily, or are producing client work.
+>
+> Both work fine with everything we've built. Which one are you on?
+
+Wait for the producer's answer. Then:
+
+- **Remember the choice** for the rest of the session. Substitute *"Higgsfield"* / *"ArtCraft"* into Step 5.3's pause grammar accordingly, and replace *"the Higgsfield UI"* with *"the ArtCraft UI"* / *"the Higgsfield UI"* as the producer indicated.
+- **If they picked ArtCraft** and the shot list later includes a multi-cut shot (auto-edit ON, multiple beats inside one prompt), flag it in advance: *"Heads up — Shot [#] is a multi-cut burst. ArtCraft can't do that in one generation. Two options: (a) split it into [N] separate single-shot generations and cut them in your editor, or (b) generate just this one shot on Higgsfield. Which?"* Don't silently lose the cuts.
+- **If they're unsure**, default to ArtCraft and note: *"ArtCraft is the cheaper start — if you hit the multi-cut wall later, easy to add Higgsfield then."*
+
+This question fires **once per project** at the start of Phase 5. Don't re-ask on every shot.
+
 ### Step 5.1 — Pre-flight context load (and just-in-time asset build if needed)
 
 Before invoking cinema-worldbuilder for the shot, make sure the conversation has the context:
@@ -529,8 +548,8 @@ Let cinema-worldbuilder run its 5-line pre-prompt confirmation (Mode / Scene / C
 Issue this instruction:
 
 > **Run this in Seedance now.**
-> 1. Paste the prompt above into Seedance on Higgsfield.
-> 2. Attach the same reference images you uploaded here, in the Higgsfield UI.
+> 1. Paste the prompt above into Seedance on [Higgsfield / ArtCraft — substitute the host the producer picked at Step 5.0].
+> 2. Attach the same reference images you uploaded here, in the [Higgsfield / ArtCraft] UI.
 > 3. Set the aspect ratio in the UI (typically 16:9 for cinema, 9:16 for vertical, 1:1 for square).
 > 4. Generate.
 > 5. Save the result to: `clips/shot_<##>_v01.mp4`
