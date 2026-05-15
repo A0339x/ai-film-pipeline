@@ -729,6 +729,32 @@ The user can run a focused check with a flag-style argument:
 
 Use these when the producer wants a fast check on one dimension without uploading every asset.
 
+### Single-shot QC (the per-shot lookahead pattern)
+
+`ai-film-director` invokes `video-qa` in **single-shot mode** after each kept clip during Phase 5 (when per-shot QC is enabled in guided mode, or explicitly opted-in by a pro-mode user). This is the **lean lookahead audit**, not the full closer audit.
+
+**What single-shot QC checks** (focused subset of pro mode):
+
+1. **Drift screening on this one clip's references** — multi-frame extraction via ffmpeg (per the FRAME EXTRACTION section above), comparison against the locked character / prop / environment references that this specific shot uses. Surface within-clip drift (paint shifts mid-shot, wrong-generation prop slips, identity wobble) AND between-shot drift (does this clip's identity match the previous clips' versions of the same character/prop).
+2. **Local continuity check** — does this shot's ending connect cleanly to what the next shot in `shot-list.md` expects to open on? Read the next shot's "Connects from" note and verify this shot's ending state matches.
+3. **Prompt rule scan on the prompt actually used** for this generation — music language? real brand names? proper character names? age descriptors? Text check, fast and reliable.
+
+**What single-shot QC skips:**
+
+- Project-wide scoring across categories
+- Ship/Hold/Block verdict (irrelevant for a single shot mid-project)
+- Regression mode (no prior baseline for a single shot)
+- Full inventory upload requirement
+- Report file generation in `qc-reports/` (single-shot findings live in the conversation; project-wide reports come at end-of-project full QC)
+
+**Output for single-shot QC:**
+
+Either:
+- *"Shot [#] clean — no findings. Moving on."* (the most common case, ~70%+)
+- *"Shot [#] has [N] finding(s). Pausing before next shot."* — then surface the findings with multi-frame evidence and recommended fix path, exactly like pro mode pauses.
+
+**Default behavior is opt-in via the orchestrator's offer pattern, not auto-run.** The orchestrator asks after each kept shot; the user picks yes / skip / skip-rest. Single-shot QC should NEVER run silently without an explicit yes — surprise QC interruptions kill flow.
+
 ---
 
 ## IRON RULES

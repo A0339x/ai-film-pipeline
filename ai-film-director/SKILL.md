@@ -513,6 +513,45 @@ If the user asks for an iteration, hand back to cinema-worldbuilder noting it's 
 - *"You're 60% through the shot list and we've used [X] credits. At this burn rate we'll finish at [Y]. Your Phase 0 budget was [Z]. Still in range?"*
 - *"You skipped over Shot 6 — was it cut? Update shot-list.md so we don't try to assemble it later."*
 
+### Step 5.4.5 — Offer per-shot QC (after each "kept" confirmation)
+
+**Catch drift incrementally, not at the end.** Project-wide QC at ship-time is where most issues get found, but by then they're expensive to fix (you've burned credits on subsequent shots that may inherit the same drift, and fixes mean re-doing work). A focused QC pass on each newly-kept clip — before generating the next shot — catches drift while it's still cheap.
+
+**The offer pattern (not auto-run):**
+
+After the user confirms a shot is kept (e.g., *"Shot 4 kept"*), the orchestrator offers a quick QC pass on just that clip:
+
+> Want me to run a focused QC check on Shot [#] before we move to Shot [#+1]? Single-shot drift screen — compares frames against the locked references (character + prop + environment), plus a prompt-text rule scan. Catches issues now while they're cheap to fix. ~30 seconds.
+>
+> - **Yes** — run pro-QC on just this clip
+> - **Skip** — move directly to the next shot
+> - **Skip the rest** — stop asking; I'll invoke QC explicitly when I want it
+
+Three response paths:
+
+- **"Yes" / "run it" / "check it"** → hand off to `video-qa` for a single-shot scoped pro audit on the just-kept clip. Use the multi-frame extraction protocol per the QC skill. Surface findings if any (drift, continuity, prompt-rule violations specific to this shot). If anything Critical or High lands, pause Phase 5 and resolve before moving to the next shot.
+- **"Skip" / "no" / "next"** → silently move to the next shot. Don't editorialize. The producer made the call.
+- **"Skip the rest" / "stop asking" / "don't ask again"** → set conversation-state flag *per-shot-qc-disabled-this-session* and don't surface the offer again for the remainder of this session. The producer can still invoke QC explicitly later.
+
+**Mode-aware default behavior:**
+
+- **Guided mode** — offer per-shot QC by default after every kept shot, with the three-path response above. The structured cadence is part of guided mode's value.
+- **Pro mode** — do NOT offer per-shot QC by default. Pro users are presumed to know when they want QC and will invoke it explicitly. Offering after every shot is the kind of ceremony pro mode is designed to avoid. (If a pro-mode user wants per-shot QC on, they can say *"check every shot"* or *"qc after each one"* and we flip the per-shot-qc flag on for the session.)
+
+**What single-shot QC actually checks:**
+
+The QC skill in single-shot mode runs a focused subset of its standard pro-mode checks:
+
+1. **Drift screening** on the just-kept clip's references — does the character / prop / environment in this clip match what was locked in earlier shots?
+2. **Continuity check** — does this shot's ending connect cleanly to what the next shot's `shot-list.md` entry expects to open on? (E.g., if Shot 4 ended with engine settled, does Shot 5a open with car in motion at higher RPM as planned?)
+3. **Prompt rule scan** for the prompt actually used in this generation — any music language? real brand names? proper character names? age descriptors? (Text check, fast and reliable.)
+
+Single-shot mode skips: project-level scoring, Ship/Hold/Block verdict, regression mode, full-inventory upload. It's the lean lookahead, not the closer.
+
+**Why this matters in practice:**
+
+The E39/E46 taillight drift we caught on Shot 5c in the source production's reference run would have been caught BEFORE Shot 6 generation if per-shot QC had run after Shot 5c. Instead, it was discovered in end-of-project full-audit. Per-shot QC moves the catch point earlier — credit-saving, fix-cheaper, less downstream contamination.
+
 ### Step 5.5 — Close the phase
 
 Phase 5 closes when every shot in `shot-list.md` is either marked `kept` (with a saved clip) or `cut` (with a note in the log). No half-mapped shots; no orphan clips.
