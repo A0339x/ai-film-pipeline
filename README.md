@@ -7,12 +7,12 @@
 <p align="center"><em>A 30-second BMW E39 M5 black-tie commercial — every shot built with this pipeline. Real-photo references → ChatGPT character sheets → Seedance shots on ArtCraft. Roughly one weekend, around $10 in generation credits.</em></p>
 
 <p align="center">
-  <img src="docs/images/ctrl-scene-1.jpg" width="32%" alt="CTRL scene still — battle sequence">
-  <img src="docs/images/ctrl-scene-2.jpg" width="32%" alt="CTRL scene still — loft interior">
-  <img src="docs/images/ctrl-scene-3.jpg" width="32%" alt="CTRL scene still — stadium performance">
+  <img src="docs/images/ctrl-performance.jpg" width="32%" alt="CTRL — on-stage performance close-up, mic and IEM, generated in Higgsfield">
+  <img src="docs/images/ctrl-portrait.jpg" width="32%" alt="CTRL — tight subject portrait, ponytail and blunt bangs, black ribbed crop">
+  <img src="docs/images/ctrl-stadium.jpg" width="32%" alt="CTRL — sold-out stadium with suspended LED cube, fan-cam light sticks across the crowd">
 </p>
 
-<p align="center"><em>The two specialist skills in this repo are built on top of Joey's original work for <strong>CTRL</strong> — an AI-generated K-Pop short film, four members, one song, every frame AI-built. <a href="https://www.instagram.com/p/DXb_GzZDmOy/">Watch CTRL on Instagram</a> · directed by Joey (<a href="https://www.instagram.com/acornjoey/">@acornjoey</a>), NYC. If you follow him, mention that a0339x sent you.</em></p>
+<p align="center"><em>The two specialist skills in this repo are built on top of Joey's original work for <strong>CTRL</strong> — an AI-generated K-Pop short film. On-stage performance frames, tight subject portraits, full stadium scale — every shot AI-built. <a href="https://www.instagram.com/p/DXb_GzZDmOy/">Watch CTRL on Instagram</a> · directed by Joey (<a href="https://www.instagram.com/acornjoey/">@acornjoey</a>), NYC. If you follow him, mention that a0339x sent you.</em></p>
 
 ---
 
