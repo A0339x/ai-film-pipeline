@@ -9,6 +9,7 @@
 - **Emotional throughline (one sentence):**
 - **Music role:** scored by Suno track / diegetic only / silent
 - **Anchor moments / payoffs:** the 2–4 beats the whole film is built around — set time codes if known
+- **Color grade palette (optional):** 4–6 swatch hex palette + plain-English captions if locked at Phase 0.5, e.g. `["#1a2832", "#4a5b6c", "#d8c8a0", "#e89a5e"]` (deep teal shadow, cool steel midtone, warm dusty highlight, sunset accent). Skip this line if no palette was locked — each cinema mode uses its default grade.
 
 ## Cast index
 

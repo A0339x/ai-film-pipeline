@@ -346,7 +346,7 @@ Every Seedance prompt this skill generates follows the same structure: a **singl
 **Structure:**
 
 ```
-Style & Mood: [genre register, emotional tone, visual references in 1-2 sentences — e.g., "Documentary-grit cinematic realism with a slow-burn observational register, the camera as a witness rather than a participant, references the patient framing of Roma and the kinetic immediacy of Children of Men."]
+Style & Mood: [genre register, emotional tone, visual references in 1-2 sentences — e.g., "Documentary-grit cinematic realism with a slow-burn observational register, the camera as a witness rather than a participant, references the patient framing of Roma and the kinetic immediacy of Children of Men."] [If a project-level hex palette is supplied by the caller, append it inline: "Color palette: ["#xxxxxx", "#xxxxxx", "#xxxxxx", "#xxxxxx"] — [short plain-English caption per swatch]."]
 
 Dynamic Description: [what happens across the duration of the shot — every action, gesture, camera move, focus rack, lighting change. For multi-shot sequences, label each shot inline with its time range ("Shot 1 (0–3s): ... hard cut to Shot 2 (3–7s): ..."). Use trigger words for cuts ("hard cut to...", "smash cut to...") if multiple shots are stitched. Describe physics, not commentary. One continuous flow.]
 
@@ -356,6 +356,12 @@ Static Description: [everything that does not change across the shot — the loc
 
 [Diegetic audio line.]
 ```
+
+**Color grade palette hook (optional).** When `ai-film-director` (at Step 0.5) locked a project-level hex palette with the producer, every Seedance prompt this skill outputs should append the palette inline at the end of the Style & Mood line in this exact format:
+
+> *"Color palette: ["#1a2832", "#4a5b6c", "#d8c8a0", "#e89a5e"] — deep teal shadow, cool steel midtone, warm dusty highlight, sunset accent."*
+
+Same 4–6 swatches across every shot in the project. Don't change palette per shot — the whole point is project-level color consistency. Per Higgsfield's Seedance 2.0 production guide, baking specific hex values into the Style & Mood line is what ties the project to one color signature. If no palette was locked at Step 0.5, skip this entirely — the cinema mode's default grade carries the look.
 
 The whole thing is one paragraph from start to finish. No line breaks inside it once delivered. No section dividers. No headers. The bolded inline labels are the only structure.
 

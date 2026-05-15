@@ -228,7 +228,43 @@ Example confirmed brief format:
 
 > **Concept brief:** A 30-second AI-built brand spot for BMW M-series. One driver as the hero character, an empty mountain road at golden hour, the car as the second hero subject. Emotional register: cold confidence, machine-as-art. Three sequences — driver close-up, road run, hero static. No dialogue. Diegetic engine + tire audio under a scored Suno track. Budget: medium (~3,000 credits).
 
-Once locked: save this brief at the top of `shot-list.md` and proceed to Phase 1.
+Once locked: save this brief at the top of `shot-list.md`.
+
+### Step 0.5 — Color grading preferences (optional, ask once)
+
+Before moving into Phase 1, ask one final discovery question:
+
+> *"One last thing — any color grading preferences or ideas for this project? Cool desaturated and noir-ish? Warm tungsten golden hour? Heavy teal-and-orange blockbuster? Naturalistic? Or no preference, in which case each cinema mode uses its own default grade?"*
+
+**If the producer has no preference / not sure** → skip the rest of this step. Each cinema mode (M1/M2/M3/M4/M5) has a default grade baked into `cinema-worldbuilder`; that's fine and won't fight anything.
+
+**If the producer does have a preference** → have a short plain-English grading conversation. They'll describe the grade naturally (*"warm dusty highlights, deep teal shadows, slight green push in midtones, slightly lifted blacks"*). Your job is to **mirror it back as a hex palette** — they almost certainly won't speak hex, so you translate. Per Higgsfield's Seedance 2.0 production guide, including specific hex values in the Style & Mood line of every shot's prompt ties the whole project to one color signature and dramatically tightens grade consistency across generations.
+
+**Translation pattern:**
+
+1. Listen to the plain-English description.
+2. Mirror back a **4–6 swatch hex palette** covering, at minimum: shadow tone, midtone, highlight, key accent. Optional extras: skin tone target, background base, secondary accent.
+3. Show the palette inline with a short plain-English caption per swatch, e.g.:
+
+   ```
+   ["#1a2832", "#4a5b6c", "#d8c8a0", "#e89a5e"]
+   ```
+
+   *#1a2832 — deep teal shadow* · *#4a5b6c — cool steel midtone* · *#d8c8a0 — warm dusty highlight* · *#e89a5e — sunset key accent*
+
+4. Ask: *"Look right? Drop any, adjust any, add any."*
+5. Iterate freely until the producer locks. Hex values are cheap; rerolling on a swatch is just a text edit.
+6. Save the locked palette to `shot-list.md` in the concept block at the top (under a `**Color grade palette:**` line). It gets carried into every shot's Style & Mood by `cinema-worldbuilder` in Phase 5.
+
+**Pitfall flags during the grading conversation:**
+
+- *"You named seven swatches — past 6 the palette starts diluting. Want to drop two and keep the four that carry the most weight?"*
+- *"This palette has zero accent — every swatch sits in the same value range. Want to add one bright or one deep-dark to anchor the contrast?"*
+- *"Locking a heavy red palette and the project is a narrative short — heads up, red palettes tend to read as horror / suspense / passion. Match your emotional register or rethink."*
+
+The palette is one tool among many. If the producer finds it constraining mid-project, it's optional — the cinema modes work fine without it, and dropping the palette mid-run is a single edit to the shot list's concept block.
+
+Once color is locked (or skipped): proceed to Phase 1.
 
 **Pitfall flags to fire in Phase 0:**
 - *"You haven't told me a runtime — every second is credit spend. What are we shooting for?"*
