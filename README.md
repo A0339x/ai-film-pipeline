@@ -37,10 +37,10 @@ Open the **Claude desktop app** in **Cowork mode** (or run `claude` in your term
 Swap "promotional BMW commercial featuring the new BMW M5 2026" for whatever you actually want to make — a music video, a short film, a brand spot, a perfume teaser, anything. The orchestrator clones the repo, reads `CLAUDE.md`, follows the workflow, and starts asking you the right questions one at a time.
 
 <p align="center">
-  <img src="docs/images/use-it-example.png" alt="A Claude desktop app Cowork session — pasted repo URL, instructions to download and lead, agent already cloning and reading CLAUDE.md" width="900">
+  <img src="docs/images/use-it-example.png" alt="A Claude desktop Cowork session — agent has cloned the repo, read CLAUDE.md, mapped the full phase plan in the progress sidebar, and is asking the first orchestrator question (Higgsfield experience level) as a multi-choice picker" width="900">
 </p>
 
-<p align="center"><em>That's the whole onboarding. Drop the link, ask Claude to download the repo and read <code>CLAUDE.md</code>, describe your project. The agent takes it from there.</em></p>
+<p align="center"><em>That's the whole onboarding. Drop the link, ask Claude to download the repo and read <code>CLAUDE.md</code>, describe your project — and watch the agent map every phase (right sidebar), then start asking the right questions one at a time. The whole pipeline runs from there.</em></p>
 
 The rest of this README (install paths, skill anatomy, platform recommendations, file conventions) is the full reference — useful once you're deep in a project, but skippable for your first run.
 
