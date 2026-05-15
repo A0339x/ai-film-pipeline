@@ -356,57 +356,107 @@ Sort findings by severity. Decide what to fix based on tier:
 
 Mark any finding that can't be fixed (e.g., the look the producer wanted is impossible in the model) as "deferred — needs creative reframe."
 
-### Phase 6 — Fix loop
+### Phase 6 — Interactive fix loop
 
-For each fixable finding, in severity order:
+For each fixable finding, in severity order. **This phase is conversational, not prescriptive.** When the cause is ambiguous, the QC skill asks diagnostic questions before prescribing a fix — exactly like a senior editor would walk a producer through troubleshooting. When the cause is clear, the skill states it and offers fix paths for the producer to pick from.
 
-#### 6a. Locate the cause
+#### 6a. Surface the finding with evidence
 
-For each finding, identify which generation produced the bad output. Pull from `generation-log.md`:
+State what you found, with the visible proof. Don't bury the lede in jargon.
+
+> ⏸️ **Pausing for fix — Shot [#] [category] [severity]**
+>
+> **What I found:** [one sentence describing the slip]
+>
+> **Evidence:**
+> - Locked reference: `references/<path>/<file>.png`
+> - Generated clip frame(s) showing the issue: `frame_<NN>.png` from multi-frame extraction
+> - [side-by-side description of what differs]
+
+#### 6b. Diagnose the cause — interactively when uncertain
+
+For each finding, identify which generation produced the bad output by reading `generation-log.md`:
 - Which prompt was used?
 - Which references were attached when generating?
 - Was the prompt pre-flighted correctly (images + bibles + shot-list entry attached to the source conversation)?
 
-The cause is almost always one of:
+**Common cause categories** (any one of these or a combo):
 - Wrong reference attached (or none attached)
 - Wrong look pulled from the bible (e.g., used "base" when shot called for "stadium")
+- Source reference itself has the wrong detail (the locked sheet is wrong, so every downstream shot inherits the wrong detail)
 - Cinema-mode mismatch in the prompt vs. the location's locked mode
 - Music language leaked into the Seedance prompt
 - Photoreal stack got truncated or rewritten in iteration
 - Skipped lock step (no character sheet existed, character drifted)
 - Prompt rephrased mid-iteration and lost a wardrobe detail
 - Brand or proper name slipped in
+- Seedance interpretation drift on a fine detail at certain framings (the source is right but the model lost the detail in this specific shot)
 
-Report the cause to the user as part of the finding. *"Shot 7 face drift — cause: only the base look was attached in Higgsfield; the locked 6-panel sheet was not. Without the sheet, Seedance loses bone structure by the 7th second of generation."*
+**Diagnostic interaction pattern — ask, don't assume.** When the cause is ambiguous (which is most of the time on fine-detail slips), surface the diagnostic question to the producer rather than guessing:
 
-#### 6b. Prescribe the fix
+> The wheels on Shot 5c look like generic multi-spoke alloys, not the locked Style 65 five-paired-double-spoke pattern. This could be one of two things:
+>
+> 1. **Source reference issue** — the locked `m5/sheet.png` itself has the wrong wheels, so every shot inherits the drift. Fix: regenerate the source sheet.
+> 2. **Seedance interpretation drift** — the locked sheet is correct, but Seedance generic-ified the wheels at this distance/framing. Fix: re-roll with stronger wheel language in the prompt.
+>
+> **Quick check — can you open `m5/sheet.png` and confirm whether the wheels in the locked sheet are correct?**
 
-Based on cause, pick the right path and hand off:
+Wait for the answer. The producer's response narrows the diagnosis to a single root cause. Only THEN move to fix path.
 
-| Cause | Fix path |
+**Why this matters:** prescribing a fix without confirming the cause wastes credits. If you prescribe "re-roll with stronger wheel language" but the locked sheet is wrong, the re-roll will inherit the same wrong wheels — the producer burns credits on a fix that can't work. Diagnose first, prescribe second.
+
+#### 6c. Offer fix paths — let the producer pick
+
+Once the cause is confirmed, present 2–3 fix path options (when there's a meaningful choice) and let the producer pick. Don't auto-prescribe; surface trade-offs.
+
+| Confirmed cause | Available fix paths |
 |---|---|
-| Wrong / no reference attached | Re-generate the same prompt with the correct reference attached in Higgsfield UI — no prompt rewrite needed |
-| Wrong look pulled | Same prompt, different reference attached |
-| Cinema-mode mismatch | Hand back to `cinema-worldbuilder` for a re-cut of the prompt with the correct mode |
-| Music leak in Seedance prompt | Hand back to `cinema-worldbuilder` to strip music language and replace with diegetic audio |
-| Photoreal stack truncated | Hand back to the source skill (`banana-pro-director` or `cinema-worldbuilder`) — they re-bake the locked photoreal stack |
+| Wrong / no reference attached | (a) Re-generate same prompt with correct reference attached — fastest, no prompt rewrite |
+| Wrong look pulled | (a) Same prompt, different reference attached |
+| **Source reference itself wrong** | (a) Regenerate the source reference with stronger language → re-attach to every downstream shot that used it (and consider re-rolling those shots too) — most thorough but costliest. (b) Mask/blur the wrong detail in post in the specific shots — cheap but cosmetic only. (c) Accept best-effort, defer to post — cheapest, but the slip ships. |
+| Cinema-mode mismatch in prompt | Hand back to `cinema-worldbuilder` for a re-cut of the prompt with the correct mode |
+| Music leak in Seedance prompt | (a) Re-cut prompt with stricter no-music language → re-roll. (b) Accept and mute Seedance audio in NLE — most spots do this anyway. |
+| Photoreal stack truncated | Hand back to the source skill — they re-bake the locked photoreal stack |
 | No character sheet existed | Go back to Phase 2 of `ai-film-director`. Lock the sheet first, then re-generate any shots that drifted |
 | Wardrobe detail lost in iteration | Hand back to source skill with the bible's locked wardrobe paragraph re-pasted |
 | Brand / proper name slipped | Re-cut the prompt with brand-neutral / age-blind / no-names rewording |
+| **Seedance interpretation drift** (source is correct) | (a) Re-roll with the existing prompt + tighter reference attachment. (b) Add explicit fine-detail emphasis to the prompt and re-roll — costs credits but improves probability. (c) Accept best-effort if the detail is small in frame — the casual viewer won't see it. |
 
-#### 6c. Pause for user action
+**Frame the offer like a senior editor:**
 
-Issue the pause grammar (same as `ai-film-director`):
+> Confirmed — the locked sheet has the right wheels, so this is Seedance interpretation drift on a fine detail. Three paths from here:
+>
+> - **(a) Stronger wheel language in the prompt + re-roll** — ~80 credits per attempt, no guarantee Seedance preserves the detail at this framing
+> - **(b) Accept best-effort** — the casual viewer won't catch the slip; the enthusiast eye will. Depends on your audience tolerance.
+> - **(c) Re-roll with tighter reference attachment only** — same prompt, just attach the wheel macro reference more prominently — ~80 credits
+>
+> My recommendation: **(b) accept if this is a wider shot, (a) re-roll if this is a hero detail shot.** Your call?
 
-> **Run this in [Higgsfield / Seedance] now.**
+Then wait for the producer's choice.
+
+**Offer to write the revised prompt or troubleshoot the reference.** When the chosen fix path requires re-prompting or re-generating a source asset, the QC skill should produce the artifact and hand off cleanly:
+
+> Going with (a). Going to hand back to `cinema-worldbuilder` for an updated prompt with explicit Style-65-wheel emphasis. Want me to write that now, or do you want to skip and accept best-effort?
+
+Or when the source reference needs regeneration:
+
+> Going with the regenerate-source path. Going to hand back to your image AI workflow with an updated prompt that's stronger on the wheel detail. Want me to write the new prompt for the source sheet now?
+
+These offer-to-write moments are where the QC skill earns its keep — it's not just detecting issues, it's actively producing the fix artifacts when the producer says yes.
+
+#### 6d. Pause for user action
+
+Once the producer picks a fix path and confirms they want the artifact (re-prompt, new source generation, etc.), deliver it and issue the pause grammar:
+
+> **Run this in [Higgsfield / your image AI] now.**
 > 1. [exact action — paste the corrected prompt + attach the corrected reference]
 > 2. Save the new result to `clips/shot_<##>_v<N+1>.mp4` (keep the broken version; don't overwrite)
 > 3. Tell me "Shot [#] fixed" or "Shot [#] still broken" so I can re-check.
 
-#### 6d. Re-verify on return
+#### 6e. Re-verify on return
 
 When the user returns with a fixed clip:
-- Re-run the relevant category checks on the new clip only
+- Re-run the relevant category checks on the new clip only (multi-frame extraction if it's a video)
 - Compare side-by-side with the broken version and the locked reference
 - Classify the fix:
   - **verified** — re-check confirms the issue is resolved, no new issues introduced
@@ -414,12 +464,12 @@ When the user returns with a fixed clip:
   - **regressed** — fix made it worse → ask user if they want to keep the original or try a different fix path
   - **deferred** — couldn't fix; document and move on
 
-#### 6e. Log the fix
+#### 6f. Log the fix
 
 Append to `generation-log.md` under that shot's section:
 - Finding number, severity, category
-- Cause identified
-- Fix path taken
+- Cause identified (and how it was diagnosed — what diagnostic question got the producer's confirmation)
+- Fix path taken (which option the producer picked, and why if noted)
 - New result filename
 - Classification (verified / best-effort / regressed / deferred)
 
@@ -586,29 +636,60 @@ If you can't get evidence (e.g., user hasn't uploaded the clip), don't make the 
 
 ## PAUSE-AND-FIX GRAMMAR
 
-When you find an issue mid-sweep, pause the producer immediately with this format:
+When you find an issue mid-sweep, pause the producer immediately. **Surface the finding with evidence first; diagnose cause interactively (don't assume); then offer fix paths for the producer to pick from.** Never prescribe a fix without confirming the cause — wasted credits.
+
+**Standard pause format:**
 
 > ⏸️ **Pausing for fix — Shot [#] [category] [severity]**
 >
 > **What I found:** [one sentence describing the slip]
 >
 > **Evidence:**
-> - Locked reference: `references/characters/<name>/sheet.png`
-> - Generated clip frame: `clips/shot_<#>_v01.png` (extract a still or ask user to)
-> - [side-by-side description of the drift]
+> - Locked reference: `references/<path>/<file>.png`
+> - Generated clip frame(s): `frame_<NN>.png` from multi-frame extraction
+> - [side-by-side description of what differs]
 >
-> **Cause:** [from the generation-log analysis — most likely root cause]
+> **Possible causes** (need your input to narrow down):
+> - [Cause A — what to check]
+> - [Cause B — what to check]
 >
-> **Fix path:** [which sub-skill to call, what to re-prompt, what to re-attach]
->
-> **What to do now:**
-> 1. [exact action]
-> 2. Save to `clips/shot_<#>_v02.mp4`
-> 3. Tell me "Shot [#] fixed" so I can re-verify.
->
-> Ready to fix this, or want to defer and continue the sweep first?
+> **Quick diagnostic question:** [the specific question whose answer narrows the cause]
 
-Wait for the user's call. If they say "fix now," hand off to the source skill (`banana-pro-director` or `cinema-worldbuilder`) and walk through 6a–6e. If they say "defer," log the finding and continue.
+Wait for the producer's answer. Their response confirms which cause is active. Then proceed:
+
+> **Confirmed cause:** [from their answer]
+>
+> **Fix paths from here:**
+> - **(a)** [option] — [trade-off]
+> - **(b)** [option] — [trade-off]
+> - **(c)** [option, often "accept best-effort"] — [trade-off]
+>
+> My recommendation: **[a/b/c]** because [reason]. Your call?
+
+When the producer picks a path, **offer to produce the fix artifact** (re-prompt, source regen prompt, troubleshooting steps) before running the pause grammar:
+
+> Going with (a). Want me to write the updated prompt for the re-roll now, or do you have edits to discuss first?
+
+On their nod, deliver the artifact + the pause grammar:
+
+> **Run this in [Higgsfield / your image AI] now.**
+> 1. [exact action]
+> 2. Save to `clips/shot_<#>_v<N+1>.mp4`
+> 3. Tell me "Shot [#] fixed" so I can re-verify.
+
+**This three-step pattern — surface → diagnose interactively → offer fix paths — is the core of the QC skill's value.** It mirrors how a senior editor walks a producer through troubleshooting: you don't just say "fix this," you say "here's what I see, here's what could be causing it, let's confirm which one, then here are your options." That's the difference between QC that fixes problems and QC that just lists them.
+
+**When to skip the diagnostic question:**
+
+- The cause is unambiguous from the generation log (e.g., `generation-log.md` shows the wrong reference was attached — no need to ask, just state it)
+- The finding is a prompt-text violation (e.g., music language in the audio line) — text comparison is definitive, no ambiguity
+- The producer has already volunteered the cause in conversation
+
+When the cause is genuinely clear, state it directly and skip to offering fix paths. The interactive diagnostic step exists for the *ambiguous* cases — fine-detail drift, identity slips, prop continuity wobbles — where guessing the wrong cause costs credits on a fix that can't work.
+
+**If the producer says "defer":**
+
+Log the finding, mark deferred, and continue the sweep. Don't push back on the defer decision — the producer has final judgment on what ships.
 
 ---
 
@@ -761,14 +842,15 @@ Either:
 
 1. **Evidence is non-negotiable.** No finding without a frame still + reference comparison (visual) or quoted prompt text (text).
 2. **Pause incrementally.** Stop the producer the moment a Critical or High finding is confirmed. Don't batch.
-3. **Diagnose before prescribing.** Every fix path is grounded in a specific cause analysis from `generation-log.md`. No guessing.
-4. **Defer to the specialist skills for re-prompts.** Don't write image or video prompts yourself. Hand back to `banana-pro-director` / `cinema-worldbuilder` with the corrected context.
-5. **Keep broken versions.** Never overwrite a bad clip. Use `_v01`, `_v02`, `_v03` filenames so the user can compare versions during the fix loop.
-6. **Self-regulate.** Stop at WTF > 25% or fix 25.
-7. **Score honestly.** A 95 means it's actually that good. A 65 means real work remains. Inflating scores helps no one.
-8. **Verdict is binary on Critical.** Even one unresolved Critical = Block. No exceptions.
-9. **Report after every run.** Save the QC report to `qc-reports/` — these compound into a project trail.
-10. **Never silently flag.** Every finding gets surfaced with evidence, cause, and prescribed fix. The producer's job is to decide; yours is to detect and prescribe.
+3. **Diagnose interactively when uncertain.** Ambiguous causes get a diagnostic question to the producer ("did the locked source sheet have the right wheels?"), not a guess. Prescribing the wrong fix wastes credits on a re-roll that can't work. When the cause is clear from the generation log, state it directly and skip the question. The interactive step exists for ambiguous cases — fine-detail drift, identity slips, prop continuity wobbles.
+4. **Offer fix paths, don't auto-prescribe.** When the producer confirms the cause, present 2–3 fix paths with trade-offs and a recommendation. Let the producer pick. Then offer to produce the fix artifact (re-prompt, source regen prompt) on their nod.
+5. **Defer to the specialist skills for re-prompts.** Don't write image or video prompts yourself. Hand back to `banana-pro-director` / `cinema-worldbuilder` with the corrected context.
+6. **Keep broken versions.** Never overwrite a bad clip. Use `_v01`, `_v02`, `_v03` filenames so the user can compare versions during the fix loop.
+7. **Self-regulate.** Stop at WTF > 25% or fix 25.
+8. **Score honestly.** A 95 means it's actually that good. A 65 means real work remains. Inflating scores helps no one.
+9. **Verdict is binary on Critical.** Even one unresolved Critical = Block. No exceptions.
+10. **Report after every run.** Save the QC report to `qc-reports/` — these compound into a project trail.
+11. **Never silently flag.** Every finding gets surfaced with evidence + interactive diagnosis + fix-path offer. The producer's job is to decide; yours is to detect, diagnose, and produce the fix artifacts when asked.
 
 ---
 
