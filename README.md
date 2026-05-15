@@ -94,9 +94,24 @@ What you get out at the end: a folder of locked references, a folder of generate
 
 Two install paths. Pick whichever matches how you already work with Claude.
 
-### Path A — Claude Code CLI (recommended, dead-simple)
+### Path A — Claude desktop app, Cowork mode (recommended for first-time producers)
 
-If you have [Claude Code](https://claude.com/claude-code) installed, this is the easiest setup. **No zipping, no uploading.** You clone the repo, point Claude Code at it, and start.
+If you're using the Claude desktop app, run this in **Cowork mode** — it's the right fit for AI film production specifically. Three reasons:
+
+1. **The Cowork Progress sidebar mirrors the seven-phase pipeline.** Discovery → Worldbuilding → Character builds → World builds → Shot list → Generation → Music/Title → Post. Each phase shows up as a tracked step on the right-hand side as the orchestrator works through it. You always know where you are.
+2. **AI film production is async-heavy.** You step away to generate in ArtCraft, edit in your NLE, run Suno, come back the next day to look at locked clips. Cowork tasks persist across that — the plan stays visible, you can queue messages while the agent works, and resuming is one click.
+3. **The interactive question UI is cleaner.** The orchestrator asks a lot of structured questions (mode pick, runtime, cinema mode picks, recurring characters yes/no). Cowork renders these as multi-choice pickers — click instead of type.
+
+**To use it:**
+
+- Open the Claude desktop app and switch to the **Cowork** tab (top of the left sidebar, between Chat and Code).
+- Optionally create a Project (e.g. `Video Creation`) so each film you make has its own folder + chat history.
+- Start a new task and paste the prompt template from the onboarding section above (the *"Hey, I want to use this https://github.com/A0339x/ai-film-pipeline ..."* one).
+- The orchestrator clones the repo, reads `CLAUDE.md`, lays out the phase plan in the Progress sidebar, and starts asking the right questions one at a time.
+
+### Path A.2 — Claude Code in the terminal (for developers / terminal-comfortable producers)
+
+If you live in the terminal and prefer Claude Code's CLI experience, this works too. Same skills, same workflow — just a different surface.
 
 ```bash
 git clone https://github.com/A0339x/ai-film-pipeline.git
@@ -104,18 +119,11 @@ cd ai-film-pipeline
 claude
 ```
 
-Then in the Claude Code session, just say what you want to make:
+Then in the session, describe what you want to make. Claude Code reads `CLAUDE.md` automatically, finds the four `SKILL.md` files at the repo root, and follows the right one as its operating instructions when the matching trigger fires.
 
-> *"I want to make an AI music video"*
-> *"Help me build a short film concept"*
-> *"Make me a brand spot for [thing]"*
+Bonus: the scaffold script runs natively, `ffmpeg` (needed for QC multi-frame extraction) auto-installs in-session, and bibles/references/clips/QC reports all live in the same workspace the agent operates on with no copy-paste.
 
-Claude Code reads `CLAUDE.md` automatically, finds the four `SKILL.md` files at the repo root, and follows the right one as its operating instructions when the matching trigger fires. The orchestrator's pause-and-save grammar, the QC frame extraction, the project scaffold script — all of it runs natively. Reference images live on your filesystem and the agent reads them directly (no upload step).
-
-Bonus advantages of the Claude Code path:
-- `./scripts/new-project.sh` runs natively — the orchestrator can call it for you.
-- `ffmpeg` (needed for QC multi-frame extraction) gets installed in-session if missing — the agent handles it.
-- Bibles, references, clips, and QC reports all live in the same workspace the agent operates on. No copy-paste between window and chat.
+**When to pick Code mode over Cowork mode:** if you're also extending the skills themselves (editing `SKILL.md` files, debugging the orchestrator's logic, adding new cinema modes). For *using* the pipeline to make a film, Cowork wins.
 
 ### Path B — claude.ai (web app / desktop app)
 
