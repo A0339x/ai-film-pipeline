@@ -1,5 +1,21 @@
 # AI Film Pipeline — guided skill set for high-end AI video production in Higgsfield
 
+<p align="center">
+  <img src="docs/images/hero-m5-spot.jpg" alt="BMW M5 spot — built end-to-end with this pipeline" width="540">
+</p>
+
+<p align="center"><em>A 30-second BMW E39 M5 black-tie commercial — every shot built with this pipeline. Real-photo references → ChatGPT character sheets → Seedance shots on ArtCraft. Roughly one weekend, around $10 in generation credits.</em></p>
+
+<p align="center">
+  <img src="docs/images/ctrl-scene-1.jpg" width="32%" alt="CTRL scene still — battle sequence">
+  <img src="docs/images/ctrl-scene-2.jpg" width="32%" alt="CTRL scene still — loft interior">
+  <img src="docs/images/ctrl-scene-3.jpg" width="32%" alt="CTRL scene still — stadium performance">
+</p>
+
+<p align="center"><em>The two specialist skills in this repo are built on top of Joey's original work for <strong>CTRL</strong> — an AI-generated K-Pop short film, four members, one song, every frame AI-built. <a href="https://www.instagram.com/p/DXb_GzZDmOy/">Watch CTRL on Instagram</a> · directed by Joey (<a href="https://www.instagram.com/acornjoey/">@acornjoey</a>), NYC. If you follow him, mention that a0339x sent you.</em></p>
+
+---
+
 End-to-end skill set for making cinema-grade AI videos in Higgsfield without burning credits on shots that drift. Four skills work together: two specialists that write the prompts, one orchestrator that leads you through the whole project, and one QC supervisor that catches drift before it ships. Runs in **Claude Code (recommended — easiest install)** or **claude.ai (web/desktop app)**.
 
 Built on top of two original skills by **Joey** (the creator of the AI-built K-Pop short film [*CTRL: Hunters*](https://youtu.be/sVib0X-PvsY)) — extended with a guided orchestrator + QC layer to walk first-time users through the workflow.
