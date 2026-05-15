@@ -47,10 +47,11 @@ In claude.ai you cannot run shell scripts and cannot auto-install dependencies. 
 
 | Stage | Tool | Notes |
 |---|---|---|
-| Character faces | Soul Cinema (Soul Cast) | One ultra-prompt can handle face + base look in one shot. Regenerate freely — Soul is unlimited. |
-| Outfits / fuses / merges | Nano Banana Pro | Use for compositing a face ref + outfit ref. Heavier credit cost. |
-| Multi-angle sheet | Banana Pro 6-panel | Lock the character once a base looks right. |
-| Environments / props / creatures | Banana Pro (Mode 3B) | Build as pure-environment plates first, then composite humans in later. |
+| Image generation host (recommended default) | **ChatGPT Plus** (~$20/mo flat) | Practically unlimited generations within rate limits, identity-preserving edits (drop in a character image, ask "make a 6-panel sheet of this person" — face stays intact), conversational refinement, real-photo inspiration uploads. Saves substantial Higgsfield credits for the entire image phase. Same banana-pro-director prompt grammar works here directly. |
+| Character faces (Higgsfield path) | Soul Cinema (Soul Cast) | One ultra-prompt can handle face + base look in one shot. Regenerate freely — Soul is unlimited. Use as fallback when ChatGPT refuses content. |
+| Outfits / fuses / merges (Higgsfield path) | Nano Banana Pro | Use for compositing a face ref + outfit ref. Heavier credit cost — prefer ChatGPT when possible. |
+| Multi-angle sheet (Higgsfield path) | Banana Pro 6-panel | Fallback only. ChatGPT's identity-preserving edit is dramatically more reliable for this step — Banana Pro often drifts faces panel-to-panel and forces multiple rerolls. |
+| Environments / props / creatures | ChatGPT (preferred) or Banana Pro Mode 3B (fallback) | Build as pure-environment plates first, then composite humans in later. Upload real-world inspiration photos when the location/prop exists in reality — ground-truth lock at zero generation credits. |
 | Video generation | Seedance 2.0 | Auto-edit ON for multi-shot. OFF only when you need a sustained single take. |
 | Video generation platform | Higgsfield (full features) **or** ArtCraft ([getartcraft.com](https://getartcraft.com/), hobby-tier) | ArtCraft Basic (~$10/mo) is the cheap default — same Seedance 2.0 model, ~63s of generation, no auto-edit / multi-cut. Push the user to Higgsfield Plus only when they need multi-cut bursts in a single generation. |
 | Upscale | Topaz Video | Final pass. 720p → higher. |

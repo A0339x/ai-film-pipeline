@@ -19,6 +19,48 @@ Photoreal is the universal default. Every prompt this skill produces describes a
 
 ---
 
+## WHERE TO GENERATE — TRY CHATGPT FIRST
+
+The prompts this skill produces are the same regardless of where you run them. Before defaulting to Higgsfield's Banana Pro / Soul Cinema (which costs per-credit and can run up fast on character sheets that need 10–20 rerolls), **strongly consider running image generation in ChatGPT first**.
+
+**ChatGPT Plus ($20/mo flat)** has become the most cost-efficient image generator for AI film pre-production:
+
+- **Flat-rate.** $20/mo covers practically unlimited generations within reasonable rate limits — vs Higgsfield's per-credit pricing where every Banana Pro reroll burns credits and a single character build can eat 50+ credits before the face truly locks.
+- **Identity-preserving edits.** ChatGPT's current image model is exceptionally good at *only changing what the user asks to change*. Drop in an existing character image and say *"make a 6-panel sheet of this person"* — the character's face, build, and styling stay intact across all six panels. This is the killer feature for the character-sheet step, where Banana Pro often drifts the face from panel to panel and forces multiple rerolls.
+- **Inspiration uploads.** Upload reference photos as inspiration — real people for face structure, real outfits for wardrobe, real locations for environment plates, real props for object sheets. ChatGPT reads them natively and incorporates the visual cues.
+- **Iterative refinement.** Conversational editing — *"now make her face slightly more angular"* or *"swap the jacket for a leather one"* — works cleanly without losing the rest of the image. Cheaper and faster than re-rolling the full prompt.
+
+### How to use ChatGPT with this skill's prompts
+
+The prompt grammar this skill produces (locked identity paragraph, photoreal stack, no-naming rule, brand-neutral language, 6-panel structure, scene plate composition) **transfers directly** to ChatGPT. The user pastes the same prompt into a ChatGPT conversation. The photoreal stack still does its job. The identity lock still holds. The no-naming rule still applies. Nothing changes about what this skill writes.
+
+What changes for the user is the *workflow*:
+
+- **Step 0–1 (base look):** Paste the banana-pro-director prompt into ChatGPT. Optionally upload an inspiration photo first. Iterate via natural-language tweaks until the face lands. Save the locked image.
+- **Step 2 (6-panel sheet):** This is where ChatGPT's identity-preservation shines. Upload the locked base image and either (a) paste the full 6-panel prompt or (b) just say *"make a 6-panel character sheet of this person — front, three-quarter, back, waist-up, hands, face"*. The character stays intact across panels.
+- **Step 3 (scene plates / props):** Upload locked character + environment inspiration. Paste the scene-plate prompt. Edit conversationally to refine composition.
+
+### When to still use Higgsfield
+
+ChatGPT-first is the recommended *default*. Fall back to Higgsfield's Banana Pro / Soul Cinema / GPT-2 when:
+
+- **ChatGPT refuses the content.** ChatGPT is more conservative about edgy fashion, near-NSFW styling, weapons, anything that reads as a real public figure, anything carrying a visible real brand mark. Banana Pro is more permissive.
+- **You need GPT-2-level face fidelity.** Higgsfield's GPT-2 is purpose-built for ultra-close-up face/chest-up portraiture and beats ChatGPT for that specific shot.
+- **Soul Cinema's character-cast feature is the cleanest path** — when you have a locked face reference and want to drop it into a totally new outfit cleanly without prompt-rewriting (Mode 1B Step 1B.2). ChatGPT can do this too, but Soul Cinema's two-step is sometimes mechanically simpler.
+- **Brand-locked production aesthetic** — if the rest of the project's image work was generated in Higgsfield and you want visual continuity in the rendering style, stay consistent.
+
+When falling back to Higgsfield, the same prompt this skill produced still works — just paste it into Banana Pro / Soul Cinema / GPT-2 instead.
+
+### Confirm with the user before generating
+
+When the user invokes this skill, **assume they're trying ChatGPT first unless they've stated otherwise.** If they haven't said which host, the pre-prompt confirmation grammar is a fine place to ask:
+
+> *"Heads up — running this in ChatGPT (recommended for cost) or Higgsfield (Banana Pro / Soul Cinema)?"*
+
+Match the pause-and-save grammar to their answer. *"Run this in ChatGPT now. Upload the reference image, paste the prompt, iterate until the face lands. Save the locked image to `references/characters/<working-name>/base.png` and tell me when locked."*
+
+---
+
 ## THE WORKFLOW — STRICT ORDER
 
 The skill enforces this order. Don't skip steps. Don't combine steps.

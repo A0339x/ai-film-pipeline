@@ -310,6 +310,26 @@ This is the phase that breaks most AI films. The director enforces the lock-befo
 
 For each recurring character, run this loop. Don't move to the next character until the current one is fully locked.
 
+### Step 2.0 — Pick the image generation host (ask once, on the first character)
+
+Before the first image prompt of the project, surface the host choice — same pattern as Step 5.0 for video. The recommended default is **ChatGPT Plus**, not Higgsfield, because ChatGPT is dramatically cheaper for image-heavy pre-production and its identity-preserving edit feature solves the biggest pain point in this phase (face drift across 6-panel sheets).
+
+> Before we generate the first character image — quick choice on where to run image generation. Same as Seedance, there are two main options:
+>
+> - **ChatGPT Plus** (~$20/mo flat) — **strongly recommended for AI film image work.** Practically unlimited generations within rate limits, so reroll freely. Identity-preserving edits: drop in an existing character image and ask *"make a 6-panel sheet of this person"* — the face, build, and styling stay intact (this used to be Banana Pro's hardest reliability problem). Upload inspiration photos to seed face structure, wardrobe, locations, props. Conversational refinement: *"make her face slightly more angular"* works cleanly without losing the rest of the image.
+> - **Higgsfield Banana Pro / Soul Cinema / GPT-2** — per-credit cost. Use when ChatGPT refuses the content (edgier fashion, near-NSFW styling, anything reading as a real public figure, anything with a visible real brand mark), when you need GPT-2-level face fidelity for ultra-close-ups, or when you want visual continuity with prior Higgsfield image work in the same project.
+>
+> The prompts banana-pro-director writes work in *either* host — same grammar, same identity locks. Which one are you on?
+
+Wait for the producer's answer. Then:
+
+- **Remember the choice** for the rest of the session (Phase 2 and Phase 3 image work). Substitute *"ChatGPT"* / *"Higgsfield"* (or *"Banana Pro"* / *"Soul Cinema"* / *"GPT-2"* as the specialist directs) into the pause-and-save grammar at Steps 2.2, 2.3, 3.1, 3.2 accordingly.
+- **If they picked ChatGPT** and a later step calls for something ChatGPT can't do (GPT-2 close-up face fidelity, content ChatGPT refuses, etc.), flag the fallback inline: *"Heads up — this shot needs GPT-2-level face fidelity that ChatGPT can't match. Want to switch to Higgsfield GPT-2 for this one image?"*
+- **If they're unsure**, default to ChatGPT and note: *"ChatGPT is the cheaper start — if you hit a refusal or need GPT-2 fidelity later, easy to swap that single image to Higgsfield."*
+- **If they don't have ChatGPT Plus** but are price-sensitive, mention it as a one-time decision: *"It's $20/mo flat vs Higgsfield's per-credit pricing — for a typical character build (50+ rerolls to land the face), Plus pays for itself in a day. Worth considering."* Don't push past their answer.
+
+This question fires **once per project** at the start of Phase 2. Don't re-ask on every character.
+
 ### Step 2.1 — Identity lock
 
 Hand off to **banana-pro-director's Step 0**.
@@ -330,15 +350,21 @@ Only branch off this default when there's a specific reason:
 
 Hand off to **banana-pro-director's Mode 1B Step 1B.1 framed as the ultra-prompt default** — describe the locked character identity + the base outfit + white seamless backdrop in a single Soul Cinema prompt. Let banana-pro-director run its pre-prompt confirm and deliver.
 
-**Pause point:** issue this instruction:
+**Pause point:** issue this instruction, substituting the host the producer picked at Step 2.0:
 
-> **Run this in Soul Cinema now (it's unlimited — reroll freely).**
-> 1. Paste the prompt above into Soul Cinema on Higgsfield.
-> 2. Generate. Regenerate until the face truly reads as the character. Ten, fifteen, twenty attempts is normal here and costs nothing.
+> **If you're on ChatGPT (recommended):**
+> 1. Paste the prompt above into ChatGPT. Optionally upload an inspiration photo first to seed face structure or wardrobe direction.
+> 2. Generate. Regenerate (or refine via chat — *"make the face slightly more angular,"* *"warmer skin tone"*) until the face truly reads as the character. Reroll freely; you're on a flat $20/mo, not per-credit.
 > 3. When one image is locked, save it to: `references/characters/<working-name>/base.png`
 > 4. Tell me "base locked" and we'll move to the character sheet.
 >
-> If you've burned 25+ generations and the face still isn't landing, come back — we'll either rework the identity description or branch to Banana Pro for tighter prompt-level control (which does cost credits per attempt).
+> **If you're on Higgsfield Soul Cinema:**
+> 1. Paste the prompt above into Soul Cinema on Higgsfield.
+> 2. Generate. Regenerate until the face truly reads as the character. Soul Cinema generations are unlimited, so ten, fifteen, twenty attempts is normal here and costs nothing.
+> 3. When one image is locked, save it to: `references/characters/<working-name>/base.png`
+> 4. Tell me "base locked" and we'll move to the character sheet.
+>
+> If you've burned 25+ generations on either host and the face still isn't landing, come back — we'll either rework the identity description or branch to Banana Pro for tighter prompt-level control (which does cost credits per attempt).
 
 ### Step 2.3 — 6-panel character sheet
 
@@ -354,12 +380,19 @@ Ask the producer if they want the default mix or want to swap any panels. Common
 
 The producer describes their panel pick in plain language; banana-pro-director composes the prompt with that panel list. Don't impose pre-named canonical mixes — the specialist's variation rule already supports whatever combination the producer asks for.
 
-Let banana-pro-director compose. Then:
+Let banana-pro-director compose. Then issue the pause instruction, substituting the host the producer picked at Step 2.0:
 
-> **Run this in Higgsfield now.**
+> **If you're on ChatGPT (recommended — this is where ChatGPT's identity-preservation shines):**
+> 1. Open a fresh ChatGPT conversation and upload the locked base image (`references/characters/<working-name>/base.png`).
+> 2. Either paste the full 6-panel prompt above, or simply say *"make a 6-panel character sheet of this person — front, three-quarter, back, waist-up, hands, face"* and let ChatGPT preserve identity from the uploaded image.
+> 3. Generate. ChatGPT typically lands all six panels with consistent identity in 1–3 attempts (where Banana Pro often takes 5–10+).
+> 4. Save the locked sheet to: `references/characters/<working-name>/sheet.png`
+> 5. Tell me "sheet locked."
+>
+> **If you're on Higgsfield Banana Pro:**
 > 1. Paste the prompt into Banana Pro.
 > 2. Attach the base image (`references/characters/<working-name>/base.png`) as the reference inside Higgsfield.
-> 3. Generate. Re-roll if any panel breaks identity.
+> 3. Generate. Re-roll if any panel breaks identity (this is the step where Banana Pro most commonly drifts).
 > 4. Save the locked sheet to: `references/characters/<working-name>/sheet.png`
 > 5. Tell me "sheet locked."
 
@@ -422,10 +455,10 @@ For each environment the producer specifically asked to lock now:
 
 - Hand off to **banana-pro-director's Mode 3B** (pure environment plate, no characters in frame).
 - Confirm the cinema mode the location uses (M1 / M2 / M3 / M4 / M5) so the camera grammar baked into the plate matches the eventual video.
-- Issue pause-and-save:
+- Issue pause-and-save, using the image host the producer picked at Step 2.0:
 
-> **Run this in Higgsfield now.**
-> 1. Paste the prompt into Banana Pro.
+> **Run this in [ChatGPT / Banana Pro on Higgsfield] now.**
+> 1. Paste the prompt into your image host. If you have a real-world photo of a similar location (or the actual location), upload it as inspiration — especially useful in ChatGPT.
 > 2. Generate. Re-roll until the world reads correctly.
 > 3. Save to: `references/environments/<location-name>/wide.png`
 > 4. Tell me "[location] locked."
@@ -439,10 +472,10 @@ For each environment the producer specifically asked to lock now:
 For each prop or creature the producer specifically asked to lock now:
 
 - Hand off to **banana-pro-director** for a 6-panel product/creature reference sheet on white seamless (product-render lighting).
-- Pause-and-save:
+- Pause-and-save, using the image host the producer picked at Step 2.0:
 
-> **Run this in Higgsfield now.**
-> 1. Paste the prompt into Banana Pro.
+> **Run this in [ChatGPT / Banana Pro on Higgsfield] now.**
+> 1. Paste the prompt into your image host. If the prop exists in the real world (a specific car, watch, garment, weapon), upload real reference photos as inspiration — far stronger identity lock than a from-scratch generation.
 > 2. Generate. Re-roll if anatomy or materials break.
 > 3. Save to: `references/props/<prop-name>/sheet.png`
 > 4. Tell me "[prop] locked."
