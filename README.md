@@ -30,13 +30,17 @@ GitHub is built for developers, and it shows — the file listings, the green bu
 https://github.com/A0339x/ai-film-pipeline
 ```
 
-Open **Claude Code** (either inside the Claude desktop app, or by running `claude` in your terminal), paste that link, and describe what you want to make. That's it. The orchestrator reads the repo, knows how to lead you through every phase, and asks you the right questions one at a time. You don't have to download anything yourself, install anything technical, or read the rest of this README first.
+Open the **Claude desktop app** in **Cowork mode** (or run `claude` in your terminal if you're already comfortable there), start a new task, and paste a message like:
+
+> *Hey, I want to use this https://github.com/A0339x/ai-film-pipeline to help me create a promotional BMW commercial featuring the new BMW M5 2026. Please download this repo, check out the CLAUDE.md file, get up to speed, and lead me through the creation of my commercial!*
+
+Swap "promotional BMW commercial featuring the new BMW M5 2026" for whatever you actually want to make — a music video, a short film, a brand spot, a perfume teaser, anything. The orchestrator clones the repo, reads `CLAUDE.md`, follows the workflow, and starts asking you the right questions one at a time.
 
 <p align="center">
-  <img src="docs/images/use-it-example.png" alt="A new Claude Code session: paste the repo URL, describe the video, send" width="700">
+  <img src="docs/images/use-it-example.png" alt="A Claude desktop app Cowork session — pasted repo URL, instructions to download and lead, agent already cloning and reading CLAUDE.md" width="900">
 </p>
 
-<p align="center"><em>That's the whole onboarding. Drop the link, describe your idea, hit send.</em></p>
+<p align="center"><em>That's the whole onboarding. Drop the link, ask Claude to download the repo and read <code>CLAUDE.md</code>, describe your project. The agent takes it from there.</em></p>
 
 The rest of this README (install paths, skill anatomy, platform recommendations, file conventions) is the full reference — useful once you're deep in a project, but skippable for your first run.
 
