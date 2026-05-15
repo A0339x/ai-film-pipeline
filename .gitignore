@@ -18,15 +18,19 @@ Desktop.ini
 # Built skill zips (users build these on demand per platform)
 *.zip
 
-# Per-project workspace artifacts users may create locally
+# Per-project workspaces — entire projects/ folder is gitignored by default.
+# Each project is the producer's personal workspace (bibles, references, clips,
+# audio, QC reports). Not for public sharing. If you want to commit an example
+# project to the repo intentionally, use `git add -f projects/<name>/...`
+projects/
+
+# Legacy: per-project content at the repo root (deprecated — use projects/<name>/ instead).
+# Kept here for backwards-compat with projects created before the multi-project convention.
 references/
 clips/
 audio/
 prompts/
 qc-reports/
-
-# Per-project filled-in bibles + shot list + generation log at the workspace root
-# (the templates in templates/ are committed; the per-project filled versions are not)
 /character-bible-*.md
 /environment-bible-*.md
 /prop-bible.md

@@ -24,6 +24,8 @@ A complete operating system for the *creation* side of AI video projects in Higg
 - **Guided pipeline for first-timers, lean iterative loop for pros.** Two operating modes per skill, switchable mid-project. Newbies get walked through seven structured phases. Pros run a five-step iterative loop with just-in-time builds.
 - **QC before ship.** A dedicated skill audits the project against locked bibles — eight scored categories in guided mode, three lean checks (drift / continuity / prompt audit) in pro mode. Pause-with-evidence, prescribed fix path, hand back to the right specialist to regenerate.
 - **Multi-frame drift detection.** QC uses `ffmpeg` to extract frames at 1 fps from every generated clip, then compares each frame against the locked references. Catches within-clip drift that single-thumbnail audit misses — wrong-generation prop slips (e.g. an E39 M5 with E46 taillights), identity wobble across a long take, animation artifacts at specific moments, hand-through-wheel clipping, etc. Cross-platform install paths documented; graceful fallback paths for users who can't install ffmpeg.
+- **Multi-project workspace.** One repo, many films. Each project lives in its own `projects/<project-name>/` folder with isolated bibles, references, clips, and QC reports. A single `scripts/new-project.sh` command scaffolds a fresh project workspace from the bundled templates. Projects don't collide; you can be running a music video, a brand spot, and a short film concurrently without their assets stepping on each other.
+- **Real-world references over AI-generated, when available.** If your subject exists in the real world — a specific car, a specific watch, a specific architectural style, a real location — **use real photos as your reference assets rather than generating new ones**. A multi-panel grid built from real photographs of an E39 M5 cockpit locks identity tighter than any AI-generated cockpit plate, costs zero credits, takes 5 minutes to assemble, and gives you fine detail (M-tri-color stitching, H-pattern shift gate, gauge cluster numerals) that's hard to prompt accurately. The pipeline treats real-world reference photos as first-class anchors — drop them into `references/` exactly as you would an AI-generated plate.
 
 What you get out at the end: a folder of locked references, a folder of generated clips, a music track, a title card image, and the bibles + shot list + generation log that document how the project was built. You bring that bundle into your NLE of choice and cut the film.
 
@@ -92,6 +94,26 @@ After generating a batch (or before final assembly), invoke `video-qa` to audit 
 
 The workspace `templates/` folder gives you starting templates for character bibles, shot lists, generation logs, Suno music prompts, and title card briefs.
 
+### Starting a new project
+
+Each project lives in its own folder under `projects/`. The bundled scaffold script creates the structure:
+
+```bash
+./scripts/new-project.sh bmw-m5-spot
+```
+
+Replace `bmw-m5-spot` with whatever lowercase-with-hyphens working name fits your project (e.g. `kpop-music-video`, `perfume-brand-30s`, `coffee-roastery-doc`). The script:
+
+- Creates `projects/<project-name>/` with the standard subfolder layout (`references/{characters,environments,props,titles}/`, `clips/`, `audio/`, `prompts/`, `qc-reports/`)
+- Copies the empty templates from `templates/` (bibles, shot list, generation log, Suno prompt, title card brief)
+- Stubs a per-project `README.md` with folder map + start-here notes
+
+The orchestrator can also run the script for you in Claude Code — it'll ask for the project name at the start of Phase 1 and handle the scaffold automatically. On claude.ai (no shell access), run the script once on a desktop machine or create the folders manually following the layout.
+
+**The `projects/` folder is gitignored** so each producer's work stays private. If you want to share a project as an example, force-add it (`git add -f`).
+
+Multiple projects can coexist in one repo without colliding — switch between them by `cd`-ing into the project folder or telling the orchestrator which project you're working on.
+
 ---
 
 ## Source attribution
@@ -122,14 +144,28 @@ The two added skills (`ai-film-director` and `video-qa`) and the workspace templ
 │   └── SKILL.md
 ├── video-qa/                  — QC skill
 │   └── SKILL.md
-└── templates/
-    ├── character-bible.md     — per-character spec
-    ├── environment-bible.md   — per-location spec
-    ├── prop-bible.md          — creatures, vehicles, hero props
-    ├── shot-list.md           — beat-by-beat film map
-    ├── generation-log.md      — what was generated, what worked
-    ├── suno-music-prompt.md   — Suno music style + lyric template
-    └── title-card-prompt.md   — Banana Pro title card brief
+├── templates/                 — empty templates (copied per project)
+│   ├── character-bible.md
+│   ├── environment-bible.md
+│   ├── prop-bible.md
+│   ├── shot-list.md
+│   ├── generation-log.md
+│   ├── suno-music-prompt.md
+│   └── title-card-prompt.md
+├── scripts/
+│   └── new-project.sh         — scaffold a new project workspace
+└── projects/                  — one folder per project (gitignored)
+    └── <project-name>/        — your workspace per film
+        ├── character-bible-*.md
+        ├── environment-bible-*.md
+        ├── prop-bible.md
+        ├── shot-list.md
+        ├── generation-log.md
+        ├── references/{characters,environments,props,titles}/
+        ├── clips/
+        ├── audio/
+        ├── prompts/
+        └── qc-reports/
 ```
 
 ---

@@ -57,6 +57,51 @@ Once that context is in the conversation, the skill ("write me the stadium scene
 
 A clean starting message looks like: *"Attached: character sheet for [working name], environment plate for the loft, prop sheet for the arcade. Bibles pasted below. Write me Shot 04 — 12 seconds, multi-shot sequence with two hard cuts."* — then paste the bibles + shot-list entry under the message.
 
+## Real-world references > AI-generated, when available
+
+**If your subject exists in the real world, use real photos as your reference assets rather than generating new ones.** This is a high-leverage workflow pattern that saves credits, locks identity tighter, and produces sharper downstream results.
+
+### When real-world references win
+
+- **Real vehicles** (E39 M5, Porsche 911 SC, Jaguar XKE, etc.) — manufacturer press photos, owner photos from forums/Bring a Trailer, real auction listings
+- **Real architecture** (a specific building style, an iconic interior, a historical location) — stock photography, your own photos, location scout shots
+- **Real watches, jewelry, branded objects you want to evoke** (described brand-neutrally in prompts) — manufacturer product photography
+- **Real fashion/wardrobe** (a specific tux cut, a particular leather jacket) — editorial shoots, brand lookbooks, your own photos
+- **Real environments you've actually been to** — your own photos beat anything AI can imagine
+
+### Why this works
+
+- **Tighter identity lock.** AI references are interpretations; real photos are ground truth. Seedance reading a real photo of an E39 M5 cockpit will preserve fine details (M-tri-color stitching, H-pattern shift gate, specific gauge cluster numerals) that are hard to prompt accurately and hard for an image AI to nail without multiple iterations.
+- **Zero credits.** Real photos cost nothing. AI-generated reference plates cost credits per attempt.
+- **Faster workflow.** Five minutes assembling a real-photo reference grid beats 20–40 minutes iterating on AI-generated plates that may still drift on key details.
+- **Better fine-detail catches by `video-qa`.** The QC skill compares generated clips against locked references. Real-photo references give QC a higher-fidelity baseline to catch wrong-generation slips (e.g. the E39/E46 taillight case the source production hit).
+
+### How to use them in the pipeline
+
+Drop real-world reference photos into the project's `references/` folder using the same naming conventions as AI-generated plates. The skills treat them as first-class anchors — no special handling required:
+
+- `references/characters/<name>/sheet.png` — could be an AI-generated 6-panel OR a multi-panel grid built from real photos of a real person (with their permission) or a stylized character composite
+- `references/props/<prop-name>/sheet.png` — for the M5 specifically in the source production, this was a 6-panel grid built from real BMW press photos and detail shots
+- `references/props/<prop-name>/cockpit.png` etc. — same pattern for interior detail sheets, dashboard macros, signature element close-ups
+- `references/environments/<location-name>/wide.png` — could be an AI plate OR a real photograph of an actual location
+
+For **multi-panel reference grids built from real photos**, the same rule applies as for AI-generated grids: **individual high-resolution images often work better than a tiled grid** (covered in the panel grid vs. individual images guidance in this doc and in the QC skill). Real photos at full resolution let Seedance pick the relevant detail per shot.
+
+### When AI generation IS the right choice
+
+- **Original characters** — your specific creative person who doesn't exist in the real world. Soul Cinema ultra-prompt is the right tool here.
+- **Fictional or stylized environments** — alien planets, cyberpunk corridors, near-future versions of real cities, anything in the world you're inventing for the film
+- **Hero props that don't exist** — the alien creature, the bespoke prop, the imagined vehicle
+- **When real photos don't match your specific creative vision** — e.g. a real M5 photographed in studio lighting, but you want it in a cinematic editorial register that no real photo captures
+
+The Phase 0 character development flow in `banana-pro-director` is for the "develop from scratch" case. The "reference exists" path is exactly for the real-photo-as-reference pattern — that's a feature, not a workaround.
+
+### One caveat — brand / IP visibility
+
+Real photos often include readable brand marks, license plates, copyrighted designs. These will propagate into your generated clips. For personal/test projects this is usually fine; for **public release or client work**, plan to mask/blur in post or pick references that don't carry the brand mark prominently. The same caveat applies to AI-generated outputs that inherit brand marks from real-photo references — covered in the brand/IP/naming category of `video-qa`'s QC checks.
+
+---
+
 ## Iron rules carried from the skills
 
 > **Source of truth:** the two specialist skills (`banana-pro-director` and `cinema-worldbuilder`) are the canonical source for these rules. The summary below is a workspace-level mirror for quick reference — if the specialists update and this section disagrees, the specialists win. When in doubt, defer to the specialist `SKILL.md` files at the repo root.
@@ -87,15 +132,55 @@ These apply anywhere a prompt is composed in this workspace, even when the skill
 │   └── SKILL.md
 ├── video-qa/                  — QC skill (zip + upload)
 │   └── SKILL.md
-└── templates/
-    ├── character-bible.md     — per-character spec
-    ├── environment-bible.md   — per-location spec
-    ├── prop-bible.md          — creatures, vehicles, hero props
-    ├── shot-list.md           — beat-by-beat film map
-    ├── generation-log.md      — what was generated, what worked
-    ├── suno-music-prompt.md   — Suno style + lyric template
-    └── title-card-prompt.md   — Banana Pro title card brief
+├── templates/                 — empty templates (copied per project)
+│   ├── character-bible.md
+│   ├── environment-bible.md
+│   ├── prop-bible.md
+│   ├── shot-list.md
+│   ├── generation-log.md
+│   ├── suno-music-prompt.md
+│   └── title-card-prompt.md
+├── scripts/
+│   └── new-project.sh         — scaffold a new project workspace
+└── projects/                  — one folder per project (gitignored — your workspaces)
+    ├── bmw-m5-spot/
+    │   ├── README.md
+    │   ├── character-bible-driver.md
+    │   ├── environment-bible-venue.md
+    │   ├── shot-list.md
+    │   ├── generation-log.md
+    │   ├── references/{characters,environments,props,titles}/
+    │   ├── clips/
+    │   ├── audio/
+    │   ├── prompts/
+    │   └── qc-reports/
+    └── <your-next-project>/
+        └── ...
 ```
+
+## Multi-project workspace convention
+
+**Each project lives in its own subfolder under `projects/`.** This keeps multiple film projects isolated so their bibles, references, clips, and QC reports don't collide.
+
+### Starting a new project
+
+**Claude Code (CLI):** the orchestrator can run the scaffold script itself. Just tell it the project name when it asks.
+
+**Manually (any environment):** run the bundled scaffold script —
+```bash
+./scripts/new-project.sh <project-name>
+```
+…where `<project-name>` is lowercase-with-hyphens (e.g. `bmw-m5-spot`, `kpop-music-video`, `perfume-brand-30s`). The script creates `projects/<project-name>/` with all the standard templates copied in, a per-project README stubbed, and the right subfolders (`references/`, `clips/`, `audio/`, `qc-reports/`, `prompts/`) pre-created.
+
+**On claude.ai (no shell access):** the agent can't run the script for you. Create the folder structure manually following the layout above, or run the script once on a desktop machine and sync the result via cloud storage.
+
+### Where the orchestrator works
+
+Once a project folder exists, the producer opens that folder (in Claude Code) or just references it conversationally (on claude.ai). All the skills' relative paths (`references/characters/<name>/sheet.png`, `clips/shot_NN_v01.mp4`, etc.) work relative to the project root — same conventions as before, just rooted in `projects/<project-name>/` instead of the repo root.
+
+### Gitignore
+
+`projects/` is **gitignored entirely** by default. Project content is personal — bibles, locked references, generated clips, QC reports — none of it gets committed to the public repo. If you ever want to share a project as an example, force-add it (`git add -f projects/<name>/...`).
 
 **To use the skills, zip each of the four skill folders and upload to claude.ai (Settings → Capabilities → Skills → +).** Each zip must contain a folder named after the skill (e.g. `ai-film-director/`) with `SKILL.md` directly inside it. By platform:
 

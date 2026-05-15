@@ -23,22 +23,41 @@ Photoreal is the universal default. Every prompt this skill produces describes a
 
 The skill enforces this order. Don't skip steps. Don't combine steps.
 
-### Step 0 — Is the character already built?
+### Step 0 — Is the subject already built (or available as real-world reference)?
 
-Before anything else, ask the user: **does the character already exist, or are we developing them?**
+Before anything else, ask the user: **does the character/prop/environment already exist, or are we developing it?** This applies to all reference-buildable subjects — characters, hero props, vehicles, environments.
 
-**If the character exists:** ask the user to drop the reference image(s). Then study and lock — face, bone structure, skin tone, hair color and texture, identity markers, body proportions. Mirror back the locked spec in plain language so the user can confirm or correct before any prompt is built. Wait for confirmation.
+**Prefer real-world references when they exist.** Before generating anything, ask whether the subject is a real thing in the real world. If yes, real photos of the real subject are nearly always a stronger anchor than AI-generated plates:
 
-**If the character is new:** development is free-form. Let the user describe the character in their own words — vibe, era, role, energy, look, references, whatever they want to share. Listen. Then mirror back a locked spec in plain language covering:
+- **Real vehicle / watch / branded object** (with brand names kept out of prompt body) → ask for press photos, owner shots, auction listing photos, manufacturer product photography
+- **Real architecture / location** → ask for stock photography, location scout shots, or the user's own photos
+- **Real wardrobe / fashion piece** → ask for editorial shoots, brand lookbooks, or user's own photos
+- **Real person whose look is being mirrored (with permission)** → real photos beat AI character development for identity fidelity
 
-- Approximate apparent age register (described by build, not number)
-- Face: bone structure, eye shape and color, brow shape, nose, lip shape, skin tone and finish
-- Hair: color (every nuance), length, texture, style
-- Body: build, proportions, posture, distinguishing markers
-- Default makeup register (if any)
-- Default expression and energy
+Real photos give you ground-truth identity at zero credit cost. They lock fine details (badging, stitching patterns, gauge numerals, architectural ornamentation) that are hard to prompt accurately and that AI generation often misses or hallucinates.
+
+**Decision tree:**
+
+1. **Real subject with real photos available** → use the real photos as references. Study, mirror back the locked visual spec, confirm with user, move to Step 1. No development phase needed; the real photos ARE the development.
+2. **Existing AI-generated character/asset from prior work** → ask for the reference image(s). Study and lock from those. Same flow as the real-photos path.
+3. **Fictional / stylized / original** (no real-world equivalent and no prior asset) → run the free-form development flow below.
+
+**If real photos / existing references are provided:** study them visual-only. Lock — face, bone structure, skin tone, hair color and texture, identity markers, body proportions (for characters); silhouette, materials, signature details, mechanical/structural features (for props); architecture, lighting register, atmospheric character (for environments). Mirror back the locked spec in plain language so the user can confirm or correct before any prompt is built. **Note especially any fine details visible in the real photos that should be preserved in generated downstream shots** — this prevents drift like the E39/E46 taillight slip the source production hit. Wait for confirmation.
+
+**If developing from scratch (no real-world equivalent and no prior reference):** development is free-form. Let the user describe the subject in their own words — vibe, era, role, energy, look, references, whatever they want to share. Listen. Then mirror back a locked spec in plain language covering:
+
+- Approximate apparent age register (described by build, not number — for characters)
+- Face: bone structure, eye shape and color, brow shape, nose, lip shape, skin tone and finish (for characters)
+- Hair: color (every nuance), length, texture, style (for characters)
+- Body: build, proportions, posture, distinguishing markers (for characters)
+- Default makeup register (if any) (for characters)
+- Default expression and energy (for characters)
+- Silhouette, materials, signature details, mechanical/structural features (for props/vehicles)
+- Architecture, lighting register, atmospheric character (for environments)
 
 Wait for confirmation or correction before generating any prompt. Iterate freely until the user says it's locked.
+
+**Multi-panel real-photo reference grids.** When working with a real subject that has multiple key angles or detail elements (e.g. an E39 M5 cockpit with steering wheel + dashboard + shifter + center stack), collect a handful of real photos covering the different angles/details and treat them as **individual references**, not a tiled grid. Individual photos at full resolution let Seedance pick the relevant detail per shot. (Tiled grids are for *same-subject-multi-angle identity locking* like a 6-panel character sheet; for *different-detail-of-the-same-subject* references, individual photos win.)
 
 ### Step 1 — Single-image character outfit (the base reference)
 

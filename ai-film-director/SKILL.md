@@ -224,39 +224,70 @@ Once locked: save this brief at the top of `shot-list.md` and proceed to Phase 1
 
 ---
 
-## PHASE 1 — WORLDBUILDING SKELETON
+## PHASE 1 — WORLDBUILDING SKELETON (and project workspace scaffold)
 
 Translate the concept brief into a counted, named index of every recurring asset. Ask:
 
-1. **Cast.** List every recurring character. Give each one a working name (the user's note-name; never used in prompts). Mark whether each is "reference exists" or "develop from scratch."
-2. **Locations.** List every distinct environment. Mark interior/exterior, day/dusk/night, and which cinema mode it likely fits (M1 narrative real-world, M2 studio/editorial void, M3 action, M4 performance, M5 atmospheric empty).
-3. **Hero props / creatures / vehicles.** Anything the camera lingers on or that recurs across shots.
+1. **Cast.** List every recurring character. Give each one a working name (the user's note-name; never used in prompts). For each: is this a real person (real photos available), an existing AI-built character from prior work, or fully develop-from-scratch?
+2. **Locations.** List every distinct environment. Mark interior/exterior, day/dusk/night, and which cinema mode it likely fits (M1 narrative real-world, M2 studio/editorial void, M3 action, M4 performance, M5 atmospheric empty). For each: is this a real location (real photos available), stock-photography-able, or fully invented?
+3. **Hero props / creatures / vehicles.** Anything the camera lingers on or that recurs across shots. For each: is this a real-world object (real photos available — most cars/watches/products fall here), or fully invented (alien creature, fictional gadget)?
 
-Output the three lists back to the user as the **asset index** with proposed slot counts (e.g., "3 recurring characters × 2 looks each = 6 character generations to lock"). Wait for confirm.
+**Strongly prefer real-world references when the subject exists in the real world.** Real photos give ground-truth identity at zero credit cost, lock fine details that are hard to prompt, and significantly reduce drift risk in downstream Seedance generations. Ask the user for real photos before assuming we need to generate plates. Examples:
 
-Then instruct the user to create folder structure in their workspace:
+- **Real vehicle** (E39 M5, Porsche 911, etc.) → manufacturer press photos, auction listings, owner photos
+- **Real architecture** (a specific museum, a Brutalist building, a Mid-century-modern interior) → stock photography, location scout shots
+- **Real watch / accessory / branded object** → manufacturer product photography (described brand-neutral in prompts)
+- **Real wardrobe** (specific tux cut, specific jacket) → editorial shoots, brand lookbooks
+
+The Phase 2 character builds and Phase 3 world builds explicitly support the "reference exists" path — when real photos are available, they ARE the locked reference, no generation needed. This is the high-leverage move: the source production used real-photo reference grids for the M5 cockpit and got tighter identity lock + zero credit cost on those assets compared to anyone trying to AI-generate the same level of detail.
+
+Output the three lists back to the user as the **asset index** with proposed slot counts AND noting which assets will use real-world references vs AI-generated plates. Wait for confirm.
+
+### Scaffold the project workspace (one-time per project)
+
+The repo supports **multiple projects coexisting** in the `projects/` directory. Each project is its own isolated folder so bibles, references, clips, and QC reports from different films don't collide.
+
+**Ask the producer:** *"What's the project working name?"* Use lowercase-with-hyphens (e.g. `bmw-m5-spot`, `kpop-music-video`, `perfume-brand-30s`). This name only lives in the folder structure and conversational notes — never in prompts.
+
+**Then scaffold:**
+
+- **Claude Code (filesystem access):** run the scaffold script directly:
+  ```bash
+  ./scripts/new-project.sh <project-name>
+  ```
+  This creates `projects/<project-name>/` with all the templates copied in, the subfolder structure (`references/{characters,environments,props,titles}/`, `clips/`, `audio/`, `prompts/`, `qc-reports/`) created, and a project-specific `README.md` stubbed.
+
+- **claude.ai (no filesystem access):** the agent can't run the script. Instruct the producer to either (a) run the script once on a desktop machine and sync the resulting folder via cloud storage, or (b) create the folder structure manually following the layout in `CLAUDE.md`. Then return to the chat.
+
+**Once the project folder exists**, every relative path the skills reference (`references/characters/<name>/sheet.png`, `clips/shot_NN_v01.mp4`, etc.) is rooted in `projects/<project-name>/`. The orchestrator should always confirm the active project at session start and treat its folder as the working directory for all save / attach / log operations.
+
+### What gets created per project
+
+Inside `projects/<project-name>/`:
 
 ```
+character-bible-<name>.md          (one per recurring character)
+environment-bible-<loc>.md         (one per recurring location)
+prop-bible.md                      (shared)
+shot-list.md
+generation-log.md
+suno-music-prompt.md
+title-card-prompt.md
 references/
-  characters/
-    [working-name-1]/
-    [working-name-2]/
-  environments/
-    [loc-1]/
-    [loc-2]/
-  props/
-    [prop-1]/
+  characters/<name>/
+  environments/<loc>/
+  props/<name>/
+  titles/
+clips/
+audio/
+prompts/
+qc-reports/
+README.md                          (per-project notes)
 ```
 
-…and to copy the relevant templates from `templates/` into the project root once per recurring asset:
+The scaffold script copies the empty templates from `templates/` and creates the placeholder bibles. The producer renames the placeholder bibles to match their working names (e.g. `character-bible-CHARACTER.md` → `character-bible-driver.md`) as Phase 2 character builds proceed.
 
-- One `character-bible-<name>.md` per character
-- One `environment-bible-<loc>.md` per location
-- One shared `prop-bible.md` if there are any props/creatures
-- One `shot-list.md` for the project
-- One `generation-log.md` for the project
-
-Once confirmed, proceed to Phase 2.
+Once the workspace is scaffolded and the asset index is confirmed, proceed to Phase 2.
 
 **Pitfall flags:**
 - *"You've got 6 characters with 3 looks each — that's 18 base looks to lock. With a tight budget, want to drop to 4 characters or 2 looks each?"*
