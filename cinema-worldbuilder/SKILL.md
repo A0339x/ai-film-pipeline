@@ -413,8 +413,10 @@ These apply to every Seedance prompt this skill produces, no exceptions:
 10. **Pure visual description only.** No meta-commentary about why the shot is framed that way ("vlog moment," "lore reveal," "the contrast is the read"). No references to the medium ("this is a still frame," "what the photo looks like"). No emotional intent ("the contrast sells it"). Every word describes a visible thing in the frame.
 11. **Diegetic audio only** — no music, no lyrics, no song references in the audio line.
 12. **Energy over position.** Describe what bodies and forces are doing, not where they are placed. Physics over geometry.
-13. **Detail cut triggers.** Use "hard cut to," "smash cut to," "match cut on" to signal edits inside multi-shot prompts. Auto-edit on by default.
-14. **Camera spec per shot when modes stack.** If a sequence stacks modes, each shot gets its own camera block.
+13. **Physics over captions.** Write the force, momentum, and consequence — not just the action verb. *"The mech's powerful, drilling arm swiftly thrusts forward... brutally impaling... with a sickening crunch"* beats *"mech punches monster."* The model renders motion better when the prompt describes the *impact*, not just the *event*. (Source: Higgsfield's Seedance 2.0 production guide.)
+14. **Minimal directional interference for genre work.** When a shot leans on a recognized genre (K-pop choreography, action-blockbuster combat, slasher-horror beat, fashion-editorial walk, etc.), trust the model's genre interpretation. One precise genre cue ("K-pop stage choreography") outperforms a frame-by-frame breakdown of every step. Over-specifying micro-movements when the genre word already does the work just confuses the render. (Source: Higgsfield's Seedance 2.0 production guide.)
+15. **Detail cut triggers.** Use "hard cut to," "smash cut to," "match cut on" to signal edits inside multi-shot prompts. Auto-edit on by default.
+16. **Camera spec per shot when modes stack.** If a sequence stacks modes, each shot gets its own camera block.
 
 ---
 

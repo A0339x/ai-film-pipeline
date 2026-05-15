@@ -109,11 +109,15 @@ Ask the user to describe the outfit they want — every garment, every accessory
 
 **Then — before writing the prompt — ask which tool to build the base in:**
 
-> Want to build this in Banana Pro (Nano Banana) or Soul Cinema?
-> — **Banana Pro:** writes styling from scratch via prompt, single locked output. Best when we want full control over every detail in one shot. Heavier on styling description.
-> — **Soul Cinema (two-step flow):** Step 1 builds the outfit on a slim normal-looking model on white seamless (no locked character yet). Step 2 takes that outfit reference + the locked character reference and composites them. Best for designing a custom fit cleanly separated from character casting. More variety per generation, faster iteration, lighter prompts at each step.
+> Three paths to pick from:
+>
+> — **Banana Pro single-shot (Mode 1A):** writes styling from scratch via prompt, single locked output. Best when we want full control over every detail in one shot. Heavier on styling description, costs Banana Pro credits per attempt.
+>
+> — **Soul Cinema two-step (Mode 1B):** Step 1 builds the outfit on a slim normal-looking model on white seamless (no locked character yet). Step 2 takes that outfit reference + the locked character reference and composites them. Best when the face is already locked and you're swapping to a new outfit. More variety per generation, faster iteration, lighter prompts at each step.
+>
+> — **Face-first three-step (Mode 1C — Higgsfield's recommended path for first builds):** generate the face/identity *alone* in Soul Cinema first (reroll freely until the face truly reads as the character — Soul is unlimited). Then generate the full outfit *alone* in Banana Pro on a neutral mannequin. Then fuse the locked face + locked outfit in Nano Banana Pro for the production-ready base. Tighter control over face and outfit independently; heaviest credit cost (Banana Pro for outfit + Nano Banana Pro for fuse), but the quality of the final base is the most controllable. Per Higgsfield's Seedance 2.0 production guide: *"Any detail that matters — a belt, a bandage, a specific accessory — gets written in explicitly here before it becomes a problem across 40+ shots."*
 
-Wait for the user to pick. Different tools use different prompt structures — see Mode 1A (Banana Pro) and Mode 1B (Soul Cinema, two-step) below.
+Wait for the user to pick. Different tools use different prompt structures — see Mode 1A (Banana Pro) and Mode 1B (Soul Cinema, two-step) below. Mode 1C is mechanically the same as running Mode 1B Step 1B.1 for the *outfit-only* generation, plus a face-only Soul Cinema generation upstream, plus a Mode 1B Step 1B.2 fuse step downstream — no separate prompt-grammar block; reuse the existing patterns in sequence.
 
 Then run the standard pre-prompt check (clean bullet format), wait for the green light, then deliver the prompt in a single fenced code block.
 

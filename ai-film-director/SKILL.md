@@ -357,6 +357,7 @@ Only branch off this default when there's a specific reason:
 
 - **Banana Pro single-shot (Mode 1A)** — branch here when the user wants full prompt-level control over every styling detail in one locked output, and is willing to spend Banana Pro credits per attempt. Use when Soul Cinema rerolls aren't converging on the look, or when the outfit is highly specific and worth the credit cost.
 - **Soul Cinema two-step (Mode 1B)** — branch here on *later outfit changes* (after the base look is locked and you need to put the locked face into a new fit cleanly). The two-step is for outfit-swap workflows, not for the first base build.
+- **Face-first three-step (Mode 1C — Higgsfield's recommended path)** — branch here when the character's base outfit is intricate or specific enough that a single ultra-prompt keeps drifting on either face or outfit details, and the producer is willing to spend on tighter control. The flow is: face-only in Soul Cinema → outfit-only on a neutral mannequin in Banana Pro → fuse the two in Nano Banana Pro. Costs more credits (Banana Pro for outfit + Nano Banana Pro for fuse), but each step is independently controllable. Recommended by Higgsfield's Seedance 2.0 production guide for first character builds. Worth raising explicitly if the project has 40+ planned shots — drift cost compounds.
 
 Hand off to **banana-pro-director's Mode 1B Step 1B.1 framed as the ultra-prompt default** — describe the locked character identity + the base outfit + white seamless backdrop in a single Soul Cinema prompt. Let banana-pro-director run its pre-prompt confirm and deliver.
 
@@ -534,6 +535,10 @@ Ask the user to add a **cut sheet** at the bottom of `shot-list.md` — the comp
 - *"You're proposing a 25-second shot — Seedance reliability drops past ~15s. Want to split this into a 12s + 12s pair with a hard cut?"*
 - *"Shot 9 calls for M3 Action handheld but it's set in your performance environment which is locked to M4. The grade will fight. Stack the modes (M4 environment plate + M3 camera work on the character) or pick one register."*
 - *"Total mapped runtime is now 1:42 — does that match the music track / brand spot length you locked in Phase 0? If not, we're overshooting."*
+
+**Double-introduction rule (per Higgsfield's Seedance 2.0 production guide).** For any recurring character that appears in 3+ shots, the shot list should give them **two introductions**: once at rest (cabin, loft, prep, walking on stage — establishes *who* they are visually) and once in action (combat, performance, decision, payoff — establishes *what they can do*). Without both, the character reads as a costume change rather than a person. Flag this when reviewing the shot list:
+
+> *"Character A appears in shots 3, 7, 11 — all action beats. We're missing the cabin/rest introduction that anchors who she is. Want to add a quiet beat earlier so the action shots have someone to be?"*
 
 The director should refuse to leave Phase 4 until every shot has all the fields filled and every "connects from / connects to" makes physical sense.
 
