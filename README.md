@@ -9,10 +9,10 @@
 </p>
 
 <p align="center">
-  <img src="docs/images/ctrl-stadium.jpg" width="800" alt="CTRL — sold-out stadium with suspended LED cube, fan-cam light sticks across the crowd">
+  <img src="docs/images/ctrl-arcade.jpg" width="800" alt="CTRL — BTS arcade scene in the loft, two members at the cabinet with toy light guns, third member visible on the couch">
 </p>
 
-<p align="center"><em>The two specialist skills in this repo are built on top of Joey's original work for <strong>CTRL</strong> — an AI-generated K-Pop short film. On-stage performance frames, tight subject portraits, full stadium scale — every shot AI-built. <a href="https://www.instagram.com/p/DXb_GzZDmOy/">Watch CTRL on Instagram</a> · directed by Joey (<a href="https://www.instagram.com/acornjoey/">@acornjoey</a>), NYC. If you follow him, mention that a0339x sent you.</em></p>
+<p align="center"><em>The two specialist skills in this repo are built on top of Joey's original work for <strong>CTRL</strong> — an AI-generated K-Pop short film. On-stage performance frames, tight subject portraits, behind-the-scenes life in the loft — every shot AI-built. <a href="https://www.instagram.com/p/DXb_GzZDmOy/">Watch CTRL on Instagram</a> · directed by Joey (<a href="https://www.instagram.com/acornjoey/">@acornjoey</a>), NYC. If you follow him, mention that a0339x sent you.</em></p>
 
 <p align="center">
   <img src="docs/images/hero-m5-spot.jpg" alt="BMW M5 spot — built end-to-end with this pipeline" width="540">
