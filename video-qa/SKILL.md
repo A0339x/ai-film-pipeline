@@ -34,6 +34,87 @@ The producer remains the final judge on every visual finding. The skill's job is
 
 ---
 
+## FRAME EXTRACTION — MULTI-FRAME PER CLIP IS THE DEFAULT
+
+**A single thumbnail per clip is insufficient.** AI-generated video drifts *within* a single clip — paint can shift, wheel detail can change, taillight design can swap between generations of the source vehicle, identity can subtly shift between the first second and the last. Single-frame audit hides all of these. `qlmanage` (macOS Quick Look) also picks an arbitrary "representative" keyframe that may be the worst possible frame to inspect.
+
+The default QC methodology is **multi-frame extraction at 1 fps via ffmpeg.** For a 4-second clip you get 4 frames; for a 5-second clip you get 5; for a 10-second clip you get 10. The producer (and the QC skill itself) then inspects every frame, catching drift that single-thumbnail audit would miss.
+
+### One-time setup (per machine)
+
+ffmpeg isn't installed by default on macOS. Install once via Homebrew:
+
+```bash
+brew install ffmpeg
+```
+
+That's a ~1-minute install that makes multi-frame extraction trivial for every QC run forever after. If `brew` isn't installed, install Homebrew first (`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`), then `brew install ffmpeg`.
+
+### The canonical extraction command
+
+For a single clip:
+
+```bash
+ffmpeg -hide_banner -loglevel error -i clips/shot_NN_vNN.mp4 \
+  -vf "fps=1,scale=1280:-1" \
+  /tmp/qa_frames/shot_NN_vNN/frame_%02d.png
+```
+
+This produces `frame_01.png`, `frame_02.png`, etc. — one frame per second of the source clip, scaled to 1280px wide for fast read by the QC agent.
+
+For all clips in a project (one batch loop):
+
+```bash
+cd <workspace>/clips
+mkdir -p /tmp/qa_frames
+for f in shot_*.mp4; do
+  name=$(basename "$f" .mp4)
+  mkdir -p "/tmp/qa_frames/$name"
+  ffmpeg -hide_banner -loglevel error -i "$f" \
+    -vf "fps=1,scale=1280:-1" \
+    "/tmp/qa_frames/$name/frame_%02d.png"
+done
+```
+
+### How many frames per clip — adjust by duration
+
+- **Short shots (3–5s):** 1 fps = 3–5 frames. Sufficient to catch drift.
+- **Medium shots (6–10s):** 1 fps = 6–10 frames. Adequate, denser if needed.
+- **Long shots (10–15s):** 1 fps = 10–15 frames. Heavy but comprehensive.
+- **Critical shots (hero beats with identity-load):** consider `fps=2` for 0.5s intervals, especially if the shot has motion that could hide drift.
+
+### What the QC agent does with multi-frame
+
+For each clip:
+
+1. Extract frames at 1 fps per the command above
+2. Read every frame via the Read tool (or sample strategically — opening, middle, closing — for triage; full read for thorough audit)
+3. For each frame, compare against:
+   - The locked character sheet (for identity drift)
+   - The locked environment plate (for world drift)
+   - The locked prop sheet (for prop drift — including fine details like taillight generation, wheel design, badge consistency)
+4. Surface any inconsistency between frames *within the same clip* — drift across the duration is a different finding than drift between clips
+5. Pair findings with the specific frame number for traceability
+
+### What multi-frame catches that single-thumbnail misses
+
+- **Within-clip drift** — early frames vs late frames showing different paint reflections, wheel designs, taillight shapes
+- **Wrong-generation prop slip** — e.g., E39 vs E46 vs E60 taillight pattern variation on the same locked car (caught only by inspecting the rear-visible frames specifically)
+- **Identity wobble** — face/beard/build shifting subtly across a long take, only visible by comparing frame N vs frame N+3
+- **Animation artifacts** — limbs clipping through solid objects at certain moments but not others; sunglasses appearing/disappearing mid-shot
+- **Lighting consistency** — gauge backlighting flickering inconsistently, etc.
+
+### Trade-offs and limits
+
+- **Storage:** 1fps × 8 clips × ~5s average = ~40 frames per project. At 1280px PNG, ~300KB each = ~12MB. Trivial.
+- **Read budget:** reading 40 frames via the Read tool consumes agent context. For thorough audit, read all. For triage audit (pro mode), sample strategically — first, middle, last frame per clip.
+- **Still doesn't catch motion-level issues:** frame extraction shows static frames, so motion glitches (jerk, speed wrong, direction wrong) still require playback review by the human producer.
+- **Doesn't catch audio issues:** as before, this is video-only frame analysis.
+
+The candor disclaimer above still applies — multi-frame inspection makes the skill *meaningfully more reliable* for visual drift than single-thumbnail, but it does not make the LLM an authoritative measurement instrument. The producer is still the final judge.
+
+---
+
 ## SOURCE OF TRUTH
 
 The specialist skills own the rules this QC pass measures against.
