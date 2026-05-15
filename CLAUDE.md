@@ -2,9 +2,32 @@
 
 This folder is a Higgsfield-first AI video production workspace. When the user opens this folder, they are starting (or continuing) a high-end AI video project — character builds, scene plates, Seedance video shots, optional music + title card, final upscale.
 
-## The four skills
+## How this repo activates — two paths
 
-Four skill folders live at the root of this repo. Each folder needs to be zipped and uploaded to **claude.ai** (Settings → Capabilities → Skills → +) before any of them activate. See the README's "Install" section for platform-specific zip instructions.
+This repo is designed to run in **either** of two Claude environments. The behavior differs slightly depending on which one you (the Claude agent reading this) are running in:
+
+### If you're running in Claude Code CLI (recommended path for users)
+
+**You do not need to tell the user to upload anything to claude.ai.** The four `SKILL.md` files (`banana-pro-director/SKILL.md`, `cinema-worldbuilder/SKILL.md`, `ai-film-director/SKILL.md`, `video-qa/SKILL.md`) are right here in the repo — read them directly with the `Read` tool when the matching trigger fires, and follow them as your operating instructions:
+
+- User says *"I want to make an AI video / music video / commercial / short film / spot"* → read `ai-film-director/SKILL.md` and follow it as the orchestrator.
+- User asks for an **image prompt** (character sheet, environment plate, prop sheet, GPT-2 detail shot) → read `banana-pro-director/SKILL.md` and follow it.
+- User asks for a **Seedance video prompt** (any single shot or sequence) → read `cinema-worldbuilder/SKILL.md` and follow it.
+- User says *"QA my project / check for drift / is this ready to ship"* → read `video-qa/SKILL.md` and follow it.
+
+When the orchestrator instructs you to "call cinema-worldbuilder" or "hand off to banana-pro-director," that means: read the relevant specialist `SKILL.md` and adopt its prompt-grammar rules for the next output. You are the one agent — there is no separate skill invocation step in Claude Code.
+
+In Claude Code you also get **filesystem-native reference handling** (no upload — Read tool picks up images directly), **can run `./scripts/new-project.sh` natively**, and **can install `ffmpeg` in-session** when QC needs it. Use these advantages.
+
+### If you're running in claude.ai (web / desktop)
+
+The four skills exist as installed claude.ai skills (Settings → Capabilities → Skills, uploaded as `.zip` files). They auto-activate based on conversation context. You don't read the `SKILL.md` files directly — the skill system loads them when the matching trigger fires. This folder's job at the workspace level is everything around the skills.
+
+In claude.ai you cannot run shell scripts and cannot auto-install dependencies. Direct the user to run scaffold scripts on a desktop machine if they need them, and remind them to `brew install ffmpeg` (or platform equivalent) before invoking `video-qa`.
+
+---
+
+## The four skills
 
 ### The two specialists (compose prompts)
 

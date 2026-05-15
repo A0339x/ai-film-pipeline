@@ -1,6 +1,6 @@
-# AI Film Pipeline — claude.ai skills for high-end AI video production in Higgsfield
+# AI Film Pipeline — guided skill set for high-end AI video production in Higgsfield
 
-End-to-end claude.ai skill set for making cinema-grade AI videos in Higgsfield without burning credits on shots that drift. Four skills work together: two specialists that write the prompts, one orchestrator that leads you through the whole project, and one QC supervisor that catches drift before it ships.
+End-to-end skill set for making cinema-grade AI videos in Higgsfield without burning credits on shots that drift. Four skills work together: two specialists that write the prompts, one orchestrator that leads you through the whole project, and one QC supervisor that catches drift before it ships. Runs in **Claude Code (recommended — easiest install)** or **claude.ai (web/desktop app)**.
 
 Built on top of two original skills by **Joey** (the creator of the AI-built K-Pop short film [*CTRL: Hunters*](https://youtu.be/sVib0X-PvsY)) — extended with a guided orchestrator + QC layer to walk first-time users through the workflow.
 
@@ -44,9 +44,36 @@ What you get out at the end: a folder of locked references, a folder of generate
 
 ## Install
 
-All four skills run inside **claude.ai** (Settings → Capabilities → Skills → +). You upload them as `.zip` files; each zip must contain a folder named after the skill (e.g. `ai-film-director/`) with `SKILL.md` directly inside it.
+Two install paths. Pick whichever matches how you already work with Claude.
 
-### Zip each folder by platform
+### Path A — Claude Code CLI (recommended, dead-simple)
+
+If you have [Claude Code](https://claude.com/claude-code) installed, this is the easiest setup. **No zipping, no uploading.** You clone the repo, point Claude Code at it, and start.
+
+```bash
+git clone https://github.com/A0339x/ai-film-pipeline.git
+cd ai-film-pipeline
+claude
+```
+
+Then in the Claude Code session, just say what you want to make:
+
+> *"I want to make an AI music video"*
+> *"Help me build a short film concept"*
+> *"Make me a brand spot for [thing]"*
+
+Claude Code reads `CLAUDE.md` automatically, finds the four `SKILL.md` files at the repo root, and follows the right one as its operating instructions when the matching trigger fires. The orchestrator's pause-and-save grammar, the QC frame extraction, the project scaffold script — all of it runs natively. Reference images live on your filesystem and the agent reads them directly (no upload step).
+
+Bonus advantages of the Claude Code path:
+- `./scripts/new-project.sh` runs natively — the orchestrator can call it for you.
+- `ffmpeg` (needed for QC multi-frame extraction) gets installed in-session if missing — the agent handles it.
+- Bibles, references, clips, and QC reports all live in the same workspace the agent operates on. No copy-paste between window and chat.
+
+### Path B — claude.ai (web app / desktop app)
+
+If you'd rather work in [claude.ai](https://claude.ai) (web or desktop), upload the four skills as `.zip` files via **Settings → Capabilities → Skills → +**. Each zip must contain a folder named after the skill (e.g. `ai-film-director/`) with `SKILL.md` directly inside it.
+
+#### Zip each folder by platform
 
 | Platform | Command / action |
 |---|---|
@@ -56,7 +83,7 @@ All four skills run inside **claude.ai** (Settings → Capabilities → Skills �
 | Windows PowerShell | `Compress-Archive -Path ai-film-director -DestinationPath ai-film-director.zip` (repeat for the other three) |
 | iPad / browser-only | Use the Files app's **Compress** option on each folder. Upload via claude.ai on a desktop browser. |
 
-### Upload to claude.ai
+#### Upload to claude.ai
 
 1. Open [claude.ai](https://claude.ai) in a browser or the desktop app.
 2. Go to **Settings → Capabilities → Skills**.
@@ -66,11 +93,13 @@ All four skills run inside **claude.ai** (Settings → Capabilities → Skills �
 
 You need all four installed for the orchestrator and QC to work properly. Without the specialists installed, handoffs degrade silently to generic Claude prompt-writing.
 
+**Trade-offs vs Claude Code:** you'll attach reference images to chats manually (vs filesystem-native in Claude Code), you'll need to run the scaffold script on a separate desktop machine if you want it (or create project folders by hand), and you'll need to install `ffmpeg` yourself before invoking `video-qa` (Claude Code can do this in-session for you).
+
 ---
 
 ## Use
 
-In a new claude.ai chat, say what you want to make:
+In a new Claude Code session (or claude.ai chat), say what you want to make:
 
 > *"I want to make an AI music video"*
 > *"Help me build a short film concept"*
@@ -78,7 +107,7 @@ In a new claude.ai chat, say what you want to make:
 
 `ai-film-director` activates and asks two opening questions:
 
-1. **Are the other three skills installed?** (If not, install them first — handoffs need them.)
+1. **Are the other three specialists available?** (In Claude Code: yes, they're sibling files in the repo — confirm and move on. On claude.ai: are the other three zips installed? If not, install them first — handoffs need them.)
 2. **Pro mode or guided mode?** Guided walks first-timers through seven phases with structured gates. Pro runs a five-step iterative loop for users who know the workflow.
 
 From there, the orchestrator leads. It will:
@@ -118,7 +147,7 @@ Multiple projects can coexist in one repo without colliding — switch between t
 
 ## Where to run Seedance — platform recommendations
 
-The four skills run on **claude.ai** (that's where you upload them and where they auto-activate). But the actual **video generation happens on a Seedance 2.0 host** — that's a separate platform where you paste the Seedance prompt that `cinema-worldbuilder` produces. Several platforms host Seedance 2.0; the right one depends on your budget and feature needs.
+The four skills run inside Claude (Claude Code or claude.ai). But the actual **video generation happens on a Seedance 2.0 host** — that's a separate platform where you paste the Seedance prompt that `cinema-worldbuilder` produces. Several platforms host Seedance 2.0; the right one depends on your budget and feature needs.
 
 ### Recommended by use case
 
