@@ -40,15 +40,66 @@ The producer remains the final judge on every visual finding. The skill's job is
 
 The default QC methodology is **multi-frame extraction at 1 fps via ffmpeg.** For a 4-second clip you get 4 frames; for a 5-second clip you get 5; for a 10-second clip you get 10. The producer (and the QC skill itself) then inspects every frame, catching drift that single-thumbnail audit would miss.
 
-### One-time setup (per machine)
+### Prerequisite — ffmpeg (one-time install, per machine)
 
-ffmpeg isn't installed by default on macOS. Install once via Homebrew:
+**Important: the skill upload does NOT install ffmpeg.** Uploading `video-qa.zip` to claude.ai only ships the SKILL.md text — it can't touch the user's filesystem. The user is responsible for installing ffmpeg once on their own machine before running multi-frame QC.
 
+#### Environment-dependent behavior
+
+| Where the skill runs | Can ffmpeg be auto-handled? |
+|---|---|
+| **Claude Code (CLI in user's terminal)** | ✅ Yes — the agent can check `which ffmpeg`, run `brew install ffmpeg` itself if missing, and execute extraction commands directly. Fully automated. |
+| **claude.ai (web app or desktop app)** | ❌ No — the agent has no shell access. The user must install ffmpeg locally AND extract frames themselves locally AND upload the frames to the chat. The skill provides the commands; the user runs them on their own machine. |
+
+#### Install ffmpeg — by platform
+
+**macOS:**
 ```bash
 brew install ffmpeg
 ```
+If Homebrew isn't installed first: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` then re-run the brew install.
 
-That's a ~1-minute install that makes multi-frame extraction trivial for every QC run forever after. If `brew` isn't installed, install Homebrew first (`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`), then `brew install ffmpeg`.
+**Linux (Debian/Ubuntu):**
+```bash
+sudo apt update && sudo apt install -y ffmpeg
+```
+
+**Linux (Fedora/RHEL):**
+```bash
+sudo dnf install -y ffmpeg
+```
+
+**Windows (PowerShell with winget):**
+```powershell
+winget install -e --id Gyan.FFmpeg
+```
+
+**Windows (Chocolatey):**
+```powershell
+choco install ffmpeg
+```
+
+**Windows (manual):** download from https://ffmpeg.org/download.html, extract, add `bin/` to PATH.
+
+**iPad / Chromebook / browser-only:** ffmpeg can't be installed locally. Use one of the **fallback options** below.
+
+#### Fallback if you can't/won't install ffmpeg
+
+The QC pipeline still functions without ffmpeg, just with reduced reliability. In order of preference:
+
+1. **macOS Quick Look thumbnail (built-in, no install):**
+   ```bash
+   qlmanage -t -s 1280 -o ./qa_thumbs <clip>.mp4
+   ```
+   Produces a single representative thumbnail per clip. Catches obvious drift only. Misses within-clip drift, wrong-generation prop slips, identity wobble across the duration, and animation artifacts.
+
+2. **Online video-to-frames extractors:** ezgif.com/video-to-jpg, cloudconvert.com/mp4-to-jpg, or similar. Upload clip, get frames back, download, then upload frames to claude.ai. Slow but works without local install.
+
+3. **Manual screenshot during playback:** play the clip in QuickTime / VLC / your NLE, screenshot the timeline at key moments, upload the screenshots. Tedious but free and no install.
+
+4. **Use the NLE you'll edit in:** DaVinci Resolve, Premiere, and Final Cut can all export frame stills at specified timecodes. If you already have one open, this is the fastest fallback.
+
+Document which method was used in the QC report so future regression runs know whether the baseline was full-fidelity (ffmpeg multi-frame) or thumbnail-only.
 
 ### The canonical extraction command
 
