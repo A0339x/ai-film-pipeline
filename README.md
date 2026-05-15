@@ -1,9 +1,15 @@
 # AI Film Pipeline — guided skill set for high-end AI video production in Higgsfield
 
 <p align="center">
-  <img src="docs/images/ctrl-performance.jpg" width="32%" alt="CTRL — on-stage performance close-up, mic and IEM, generated in Higgsfield">
-  <img src="docs/images/ctrl-portrait.jpg" width="32%" alt="CTRL — tight subject portrait, ponytail and blunt bangs, black ribbed crop">
-  <img src="docs/images/ctrl-stadium.jpg" width="32%" alt="CTRL — sold-out stadium with suspended LED cube, fan-cam light sticks across the crowd">
+  <img src="docs/images/ctrl-performance.jpg" width="800" alt="CTRL — on-stage performance close-up, mic and IEM, generated in Higgsfield">
+</p>
+
+<p align="center">
+  <img src="docs/images/ctrl-portrait.jpg" width="600" alt="CTRL — tight subject portrait, ponytail and blunt bangs, black ribbed crop">
+</p>
+
+<p align="center">
+  <img src="docs/images/ctrl-stadium.jpg" width="800" alt="CTRL — sold-out stadium with suspended LED cube, fan-cam light sticks across the crowd">
 </p>
 
 <p align="center"><em>The two specialist skills in this repo are built on top of Joey's original work for <strong>CTRL</strong> — an AI-generated K-Pop short film. On-stage performance frames, tight subject portraits, full stadium scale — every shot AI-built. <a href="https://www.instagram.com/p/DXb_GzZDmOy/">Watch CTRL on Instagram</a> · directed by Joey (<a href="https://www.instagram.com/acornjoey/">@acornjoey</a>), NYC. If you follow him, mention that a0339x sent you.</em></p>
