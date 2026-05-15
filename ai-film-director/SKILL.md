@@ -21,6 +21,15 @@ This skill operates in one of two modes. Pick at the start of the session; the u
 
 **Both modes share:** specialist skill calls (banana-pro-director / cinema-worldbuilder), source-of-truth hierarchy, routing matrix (single-shot fast lane, escape valves), file path conventions, pitfall flags (drift / runtime overshoot / mode mismatch / brand-name-music leaks). What changes is the *shape* of the orchestration, not the safety rails.
 
+### Platform note — Higgsfield vs ArtCraft
+
+When this skill says *"run this in Higgsfield"* it means *"run this on whatever Seedance 2.0 host the producer uses."* Two hosts are common:
+
+- **Higgsfield** (full-featured, more expensive) — owns the auto-edit multi-cut feature: paste one prompt with multiple shots, get back a single video with internal cuts. Use this when the producer needs a multi-cut burst in one generation.
+- **ArtCraft** ([getartcraft.com](https://getartcraft.com/), hobby-tier, ~$10/mo Basic) — same Seedance 2.0 model, ~63s of generation per month on Basic, **no auto-edit / multi-cut**. Producers on ArtCraft generate one shot at a time and stitch in their editor. Recommend this as the default for hobby / first-project / budget-constrained users.
+
+If the producer is on ArtCraft and you have a multi-cut prompt prepared, either (a) split it into per-shot prompts and let them generate sequentially, or (b) flag the multi-cut requirement and ask if they want to upgrade to Higgsfield Plus for that specific shot. Don't silently lose cuts.
+
 ### Opening protocol — ask once at session start
 
 The first time a user invokes this skill in a session (or in a new claude.ai chat), open with this question before anything else:

@@ -116,6 +116,31 @@ Multiple projects can coexist in one repo without colliding — switch between t
 
 ---
 
+## Where to run Seedance — platform recommendations
+
+The four skills run on **claude.ai** (that's where you upload them and where they auto-activate). But the actual **video generation happens on a Seedance 2.0 host** — that's a separate platform where you paste the Seedance prompt that `cinema-worldbuilder` produces. Several platforms host Seedance 2.0; the right one depends on your budget and feature needs.
+
+### Recommended by use case
+
+| If you're... | Use | Why |
+|---|---|---|
+| **Hobbyist / single test project / budget-conscious** | **[ArtCraft](https://getartcraft.com/)** Basic ($10/mo, ~63s Seedance 2.0) | Cheapest validated path. Individual image references supported up to 9 per generation. `@Characters` identity-anchoring works well. Open-source desktop app. **Limitation:** no auto-edit / multi-cut in a single generation — if your shot needs internal cuts, generate the cuts as separate clips and assemble in your NLE. |
+| **Need multi-cut bursts in one generation** (auto-edit ON sequences) | **Higgsfield** Plus ($34–49/mo depending on region) | The source production's platform. Supports Seedance's native auto-edit for multi-shot sequences in a single prompt. Polished UI with reference attachment and asset library. More expensive but full feature parity. |
+| **One-off project, no subscription commitment** | **fal.ai** pay-per-use (~$0.24–0.30/sec at 720p) | Official Seedance 2.0 API mirror. Pay per generation, no monthly floor. Watch the resolution setting — 1080p costs ~3× the advertised 720p rate. |
+| **Power user willing to work the API** | **ByteDance / BytePlus ModelArk direct** (~$0.14/sec) | Cheapest possible. ~$0.37 per 4s clip. 3,500-character prompt limit is the catch — our cinema-worldbuilder prompts are denser than that, so prompts need compression (which trades fidelity). Right for ongoing high-volume work after you know which prompt sections you can safely trim. |
+
+### The default recommendation for new users
+
+**Start with ArtCraft Basic ($10/mo).** It covers a single 30-second spot end-to-end with credits to spare, supports reference attachment cleanly, and gets out of your way. If you discover during shot planning that you need a multi-cut sequence in a single generation (auto-edit ON), pivot to Higgsfield for just that shot — you can pay-per-month and cancel.
+
+The trap to avoid: don't subscribe to multiple platforms before you know what you need. Most spots don't require multi-cut auto-edit (you assemble cuts in your NLE anyway). For most users, ArtCraft alone is enough.
+
+### The ArtCraft / Higgsfield trade-off in one line
+
+**ArtCraft is the cheaper, slightly less powerful option. Higgsfield is the more expensive, fully-featured option.** Pick based on whether your shot list needs auto-edit multi-cut sequences (Higgsfield) or single sustained takes that you'll cut together yourself in post (ArtCraft).
+
+---
+
 ## Source attribution
 
 The two specialist skills (`banana-pro-director` and `cinema-worldbuilder`) come from **Joey**, the creator of the AI-built K-pop short *CTRL: Hunters*. He published them free on his YouTube channel and Notion, in his own words:

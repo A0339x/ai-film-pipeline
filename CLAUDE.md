@@ -29,6 +29,7 @@ Four skill folders live at the root of this repo. Each folder needs to be zipped
 | Multi-angle sheet | Banana Pro 6-panel | Lock the character once a base looks right. |
 | Environments / props / creatures | Banana Pro (Mode 3B) | Build as pure-environment plates first, then composite humans in later. |
 | Video generation | Seedance 2.0 | Auto-edit ON for multi-shot. OFF only when you need a sustained single take. |
+| Video generation platform | Higgsfield (full features) **or** ArtCraft ([getartcraft.com](https://getartcraft.com/), hobby-tier) | ArtCraft Basic (~$10/mo) is the cheap default — same Seedance 2.0 model, ~63s of generation, no auto-edit / multi-cut. Push the user to Higgsfield Plus only when they need multi-cut bursts in a single generation. |
 | Upscale | Topaz Video | Final pass. 720p → higher. |
 | Music | Suno | Hand-written style prompt + lyric sheet. See `templates/suno-music-prompt.md`. |
 
