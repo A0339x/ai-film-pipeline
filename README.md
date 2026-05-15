@@ -22,6 +22,28 @@
 
 ---
 
+## New here? You don't need to "understand GitHub."
+
+GitHub is built for developers, and it shows — the file listings, the green buttons, the talk of clones and pull requests. **For this project, you can ignore all of it.** The only piece of information you actually need is the link to this page:
+
+```
+https://github.com/A0339x/ai-film-pipeline
+```
+
+Open **Claude Code** (either inside the Claude desktop app, or by running `claude` in your terminal), paste that link, and describe what you want to make. That's it. The orchestrator reads the repo, knows how to lead you through every phase, and asks you the right questions one at a time. You don't have to download anything yourself, install anything technical, or read the rest of this README first.
+
+<p align="center">
+  <img src="docs/images/use-it-example.png" alt="A new Claude Code session: paste the repo URL, describe the video, send" width="700">
+</p>
+
+<p align="center"><em>That's the whole onboarding. Drop the link, describe your idea, hit send.</em></p>
+
+The rest of this README (install paths, skill anatomy, platform recommendations, file conventions) is the full reference — useful once you're deep in a project, but skippable for your first run.
+
+---
+
+---
+
 End-to-end skill set for making cinema-grade AI videos in Higgsfield without burning credits on shots that drift. Four skills work together: two specialists that write the prompts, one orchestrator that leads you through the whole project, and one QC supervisor that catches drift before it ships. Runs in **Claude Code (recommended — easiest install)** or **claude.ai (web/desktop app)**.
 
 Built on top of two original skills by **Joey** (the creator of the AI-built K-Pop short film [*CTRL: Hunters*](https://youtu.be/sVib0X-PvsY)) — extended with a guided orchestrator + QC layer to walk first-time users through the workflow.
