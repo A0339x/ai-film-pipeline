@@ -299,6 +299,32 @@ Example: `Audio: diegetic only — boots on wet pavement, fabric whip on movemen
 
 ---
 
+## LIP-SYNC HOOK (music video shots only — Joey's pattern)
+
+For music-video shots where a character is on-camera mouthing a lyric to a Suno track, there's one carve-out from the diegetic audio rule. Source: Joey's K-Pop Notion breakdown — three concrete mechanics, nothing more.
+
+**The lyric is character action, not audio.** It goes into the **Dynamic Description** (what the character physically does), not the Audio line. The Audio line still says diegetic-only and never names the song or describes music. The lyric appears as mouth motion the character performs.
+
+**Joey's pattern, verbatim from the K-Pop stadium shot example:**
+
+> *"lips visibly mouthing the words '[exact lyric]' with exaggerated clarity"*
+
+Optional tail he sometimes adds: *"as if teaching the crowd the hook"* — context-specific (stadium / performance register), use only when it fits the cinema mode and scene.
+
+**How to use the hook**
+
+When the caller (typically `ai-film-director` at Step 5.0.5) flags a shot as a music-video sync shot and supplies the exact lyric, insert Joey's pattern verbatim into the Dynamic Description at the moment in the shot where the mouth motion occurs. Example, dropped into a mid-shot beat:
+
+> *"…hard cut to a tight close-up from the crowd POV looking up at her — she holds the single microphone out steady at arm's length in her right hand, lips visibly mouthing the words 'we got, we got, we got control' with exaggerated clarity, a playful half-smile pulling at the corner of her mouth…"*
+
+**The audio-side mechanic (orchestrator's job, not this skill's):**
+
+The producer attaches a ~12s slice of the Suno track containing this exact lyric to the host's audio reference slot (Higgsfield "elements list" / ArtCraft "Audio Ref"). This skill does not write that step — it's covered in `ai-film-director` Phase 6.1 and Step 5.3. This skill's only job is the in-prompt pattern above.
+
+**Don't invent additional sync mechanics.** Joey's full coverage in the Notion doc is the 12s slicing + the audio-ref upload + this Dynamic-Description pattern. Nothing else. No bar-alignment grammar, no tempo cues, no per-syllable timing — none of that is in his recipe. If a caller asks for sync mechanics beyond these three, refuse and explain that the source doesn't cover it.
+
+---
+
 ## RUNTIME & PER-SHOT TIMING
 
 **Total runtime:** every Seedance prompt this skill outputs must state the total runtime explicitly inside the canonical camera/spec block at the end (e.g., "total runtime roughly fifteen seconds"). The runtime is also surfaced in the title above the code block (e.g., "Seedance prompt — 15s") and in the pre-prompt confirmation summary. Three places, same number.

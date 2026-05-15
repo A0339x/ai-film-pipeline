@@ -8,7 +8,7 @@ Cinema-worldbuilder explicitly forbids music language inside Seedance prompts �
 2. Write the lyric sheet.
 3. Paste both into Suno → generate 2 variations.
 4. Pick the better one. Save filename + style prompt + lyric in `generation-log.md`.
-5. To sync vocals to character lip movement: chop the chosen track into 12–15s clips and upload each as an element inside Higgsfield. Reference the element in the relevant shot's Seedance prompt.
+5. To sync vocals to character lip movement (music-video shots only): chop the chosen track into ~12s slices (Joey's sweet spot per the K-Pop breakdown; 15s is the ceiling). Upload each slice to the Seedance host's audio reference — Higgsfield calls it the "elements list," ArtCraft calls it "Audio Ref" (3 slots × 15s total). The per-shot lyric is written into the Seedance prompt body by `cinema-worldbuilder` as *"lips visibly mouthing the words '[exact lyric]' with exaggerated clarity"* — see `ai-film-director` Phase 5.0.5 for the orchestration.
 
 ## Style prompt structure (single line, comma-separated, dense)
 
@@ -58,7 +58,6 @@ Suno reads structural tags. Use these literally:
 Per section:
 
 - Keep lines short. Suno phrases short lines well; long lines slur.
-- Repeated hooks are gold for sync — same hook each chorus = same lip pattern when you chop and reuse.
 - Mixed-language is fine. Korean ad-libs or English hook over Korean verse, etc.
 - One vocalist per line by default — Suno is smarter when you don't tell it to layer harmonies in the lyric itself. Use the style prompt for vocalist count.
 

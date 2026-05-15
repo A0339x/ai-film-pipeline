@@ -231,6 +231,12 @@ Once locked: save this brief at the top of `shot-list.md` and proceed to Phase 1
 - *"This sounds like a brand piece — quick check, is this for a real client or a portfolio/concept spec? It matters for how protective we are about IP and brand-likeness."*
 - *"You said music video — is the track written already, or do we need to build it in Suno too? If yes, we'll loop that in Phase 6 but it changes the runtime math."*
 
+**Music-video pre-frame (only if the format is music video).** If the producer confirmed music video as the format in Q1, briefly pre-frame the lip-sync mechanic so it's not a surprise later. One sentence:
+
+> *"Heads up — for music-video shots where a character is on-camera mouthing the lyric, we'll do the actual sync work in Phase 5. The mechanic from Joey's breakdown is: chop the Suno track into ~12s slices, attach the matching slice to each shot's audio reference, and write the exact lyric into the Seedance prompt as 'lips visibly mouthing the words [lyric] with exaggerated clarity.' Nothing for you to do now — just so you know what's coming."*
+
+That's it. Don't invent additional sync mechanics — Joey's coverage is exactly this.
+
 ---
 
 ## PHASE 1 — WORLDBUILDING SKELETON (and project workspace scaffold)
@@ -552,6 +558,22 @@ Wait for the producer's answer. Then:
 
 This question fires **once per project** at the start of Phase 5. Don't re-ask on every shot.
 
+### Step 5.0.5 — Music-video lip-sync check (only if the project is a music video)
+
+**Fire this step only when the project format is music video AND this specific shot has a character on-camera mouthing lyrics.** Skip entirely for non-music-video projects, and skip for music-video shots where the character isn't on-camera or isn't singing (e.g. wide stage shots, B-roll, instrumental interludes, environment plates).
+
+For each music-video shot that needs sync, before handing off to cinema-worldbuilder:
+
+1. **Ask the producer which lyric line(s) the character mouths in this shot.** Plain language. *"Which lyric does she sing during Shot [#]? Paste it verbatim — I'll embed it in the prompt."*
+2. **Identify the matching audio slice** from the slicing the producer did in Phase 6.1. The slice that contains this lyric is the one they'll attach to the shot's audio reference at generation time.
+3. **Carry both pieces into the cinema-worldbuilder handoff** — the lyric text (so the specialist writes Joey's pattern into the Dynamic Description) and the slice filename (so the Step 5.3 pause-and-save grammar tells the producer to attach it).
+
+Joey's prompt-level pattern, quoted verbatim from his Notion breakdown (line 144, the K-Pop performance shot example), is what cinema-worldbuilder embeds:
+
+> *"lips visibly mouthing the words '[exact lyric]' with exaggerated clarity"*
+
+That's the complete recipe. No additional sync mechanics — Joey's coverage is exactly this.
+
 ### Step 5.1 — Pre-flight context load (and just-in-time asset build if needed)
 
 Before invoking cinema-worldbuilder for the shot, make sure the conversation has the context:
@@ -559,6 +581,7 @@ Before invoking cinema-worldbuilder for the shot, make sure the conversation has
 - The user should **attach the actual reference images** (character sheet, environment plate, prop sheet) to the claude.ai conversation. Text descriptions alone leave identity detail on the table.
 - The user should paste the matching **bible blocks** (locked identity paragraph + the specific look needed, the environment paragraph, any prop entry).
 - The user should paste the **shot-list entry** for this shot.
+- **For music-video sync shots:** the lyric line and the slice filename from Step 5.0.5.
 
 If any of the above is missing, ask for it before handing off. Don't let cinema-worldbuilder write cold.
 
@@ -583,10 +606,11 @@ Issue this instruction:
 > **Run this in Seedance now.**
 > 1. Paste the prompt above into Seedance on [Higgsfield / ArtCraft — substitute the host the producer picked at Step 5.0].
 > 2. Attach the same reference images you uploaded here, in the [Higgsfield / ArtCraft] UI.
-> 3. Set the aspect ratio in the UI (typically 16:9 for cinema, 9:16 for vertical, 1:1 for square).
-> 4. Generate.
-> 5. Save the result to: `clips/shot_<##>_v01.mp4`
-> 6. Tell me "Shot [#] kept" or "Shot [#] iterate" or "Shot [#] wasted."
+> 3. **[Music-video sync shots only — from Step 5.0.5]** Attach the audio slice `audio/track_v01_slice_<NN>.mp3` to the host's audio reference (Higgsfield "elements list" / ArtCraft "Audio Ref" slot). This is what gives Seedance the audio to sync the character's mouth motion against.
+> 4. Set the aspect ratio in the UI (typically 16:9 for cinema, 9:16 for vertical, 1:1 for square).
+> 5. Generate.
+> 6. Save the result to: `clips/shot_<##>_v01.mp4`
+> 7. Tell me "Shot [#] kept" or "Shot [#] iterate" or "Shot [#] wasted."
 
 ### Step 5.4 — Log every attempt
 
@@ -667,9 +691,25 @@ If a track is needed:
 > 3. Save the track to: `audio/track_v01.mp3`
 > 4. Tell me "track locked."
 
-Once locked, the user chops the track into 12–15s slices in their editor of choice. Each slice gets uploaded into Higgsfield as an audio element and referenced inside the Seedance shot that needs lip-sync to that specific lyric.
+Once the track is locked, lip-sync mechanics kick in. **Joey's complete lip-sync recipe** (from the Notion breakdown — keep this faithful, don't invent extras):
 
-**Pitfall flag:** *"Don't try to lip-sync to a 30s slice — past ~15s Seedance drifts off the lyric. Cut to bar-aligned 12–15s slices."*
+> *"Just upload in 15 second increments, my sweet spot was 12ish seconds, upload it into the elements list, and you're good to go."*
+
+So the producer:
+
+1. **Chops the locked Suno track into ~12s slices** (15s ceiling). They can use any audio editor — QuickTime trim, Audacity, the macOS Music app, anything. Save each slice as a separate file under `audio/track_<##>_slice_<NN>.mp3`. **No bar-alignment requirement** — Joey doesn't call for it; he just says 12s increments.
+
+2. **Uploads each slice to the audio reference slot** on the Seedance host:
+   - **Higgsfield:** the "elements list" — drop the slice in alongside image references.
+   - **ArtCraft:** the **Audio Ref** slot (3 slots × 15s total budget visible in the reference panel). One slice per shot fits.
+
+3. **The per-shot lyric injection happens at Phase 5**, not here. Each music-video shot that involves a character mouthing the lyric will have the lyric line written directly into the Seedance prompt body — covered in Step 5.0.5 below. This step (6.1) just produces the sliced audio files; the per-shot pairing happens during generation.
+
+> **Pause-and-prep:**
+> 1. Listen back to `audio/track_v01.mp3` and identify the natural ~12s segments that match your shot beats. Aim for slices that contain whole phrases the character will mouth (e.g. a full hook line, a full pre-chorus, etc.).
+> 2. Trim each slice and save to `audio/track_v01_slice_<NN>.mp3`.
+> 3. Make a note in `generation-log.md` of which slice corresponds to which shot in the shot list — you'll attach the matching slice when you generate that shot in Phase 5.
+> 4. Tell me "audio slices ready" when done.
 
 ### Step 6.2 — Title card
 

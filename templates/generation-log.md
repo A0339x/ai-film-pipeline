@@ -86,6 +86,6 @@ For each kept image, store the prompt under the asset bible (`character-bible.md
 Bullet points only. What you learn the hard way. Examples:
 
 - POV flip inside the same loft took 3 attempts and a transform-flip in post — budget extra credits when inventing reverse angles.
-- 12s is the Seedance sweet spot for lip-sync to a Suno bar — 15s started to drift.
+- 12s is the Seedance sweet spot for lip-sync to a Suno slice (Joey's note from the breakdown) — 15s is the ceiling, past that lip motion drifts off the lyric.
 - Soul Cinema occasionally adds jewelry that wasn't prompted — call it out explicitly *or* explicitly state "no jewelry."
 - [your observations here]
